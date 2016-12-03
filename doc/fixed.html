@@ -1,0 +1,557 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+           <html>
+           <head>
+            <meta charset="utf-8">
+           <title>numerics.fixed</title>
+           <link rel="stylesheet" href="https://dlang.org/css/codemirror.css">
+           <link rel="stylesheet" href="https://dlang.org/css/style.css">
+           <link rel="stylesheet" href="https://dlang.org/css/print.css" media="print">
+           <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+           </head>
+           <body>
+           <h1>numerics.fixed</h1>
+           <b>License:</b><br>
+<a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+
+<br><br>
+<b>Authors:</b><br>
+<a href="rumbu.ro">Răzvan Ștefănescu</a>
+
+<br><br>
+<b>Source:</b><br>
+<a href="https://github.com/rumbu13/<u>fixed</u>/package.d">package.d</a>
+
+<br><br>
+
+<dl><dt><big><a name="FixedInt"></a>struct <u>FixedInt</u>(uint bits, bool signed = true) if (bits &gt;= 96 &amp;&amp; bits % 32 == 0);
+</big></dt>
+<dd>The <u>FixedInt</u> type is a type that represents a fixed size integer.
+ <u>FixedInt</u> type implements all the arithmentic operations specific to
+ other integral types
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>bits</td>
+<td>type size, all positive multiples of 32 are accepted, except 32
+             and 64 because these are equivalent to builtin types
+             <font color=blue>int</font> and <font color=blue>long</font> and respectively
+             <font color=blue>uint</font> and <font color=blue>ulong</font></td></tr>
+<tr><td>signed</td>
+<td>indicates if the type supports negative values, defaults to
+             <b>true</b>; negative values are encoded using two's complement</td></tr>
+</table><br>
+<b>Usage:</b><br>
+<pre class="d_code">  <font color=blue>alias</font> uint128 = <u>FixedInt</u>!(128, <font color=blue>false</font>);
+  <font color=blue>alias</font> int96 = <u>FixedInt</u>!(96, <font color=blue>true</font>);
+  <font color=blue>alias</font> int128 = <u>FixedInt</u>!128;
+  <font color=blue>alias</font> uint1024 = <u>FixedInt</u>!(1024, <font color=blue>false</font>);
+
+  uint128 a = 10;
+  int96 b = int96(<font color=red>"12345678901234567890123456789"</font>);
+</pre>
+<br><br>
+<b>Members:</b><br>
+<a href="#FixedInt.digits">digits</a>
+   <a href="#FixedInt.max">max</a>
+   <a href="#FixedInt.min">min</a>
+   <a href="#FixedInt.this">this</a>
+   <a href="#FixedInt.to">to</a>
+   <a href="#FixedInt.toBytes">toBytes</a>
+   <a href="#FixedInt.toChars">toChars</a>
+   <a href="#FixedInt.toHash">toHash</a>
+   <a href="#FixedInt.toRange">toRange</a>
+   <a href="#FixedInt.toString">toString</a>
+<br><br>
+<b>Initialization:</b><br>
+from <a href="#FixedInt.this">integral</a>,
+        <a href="#FixedInt.this.2">FixedInt</a>,
+        <a href="#FixedInt.this.4">floating point</a>,
+        <a href="#FixedInt.this.3">string or character range</a>
+        <a href="#FixedInt.this.5">bytes or byte range</a>
+<br><br>
+<b>Functions:</b><br>
+<a href="#isPowerOf2">isPowerOf2</a>
+   <a href="#nextPow2">nextPow2</a>
+   <a href="#truncPow2">truncPow2</a>
+<br><br>
+<b>Traits:</b><br>
+<a href="#isFixedInt">isFixedInt</a>
+   <a href="#isSignedFixedInt">isSignedFixedInt</a>
+   <a href="#isUnsignedFixedInt">isUnsignedFixedInt</a>
+
+<br><br>
+<b>Operators:</b><br>
+<table>       <tr><th>Operation</th> <th>Expression</th> <th>Left (A a)</th> <th>Right (B b)</th> <th>Result</th></tr>
+       <tr><td>Assignment</td>
+            <td>a = b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Positive</td>
+            <td>+a</td> <td><u>FixedInt</u></td> <td>-</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Negation (2-complement)</td>
+            <td>-a</td> <td><u>FixedInt</u></td> <td>-</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Negation (logical)</td>
+            <td>~a</td> <td><u>FixedInt</u></td> <td>-</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Increment</td>
+            <td>++a</td> <td><u>FixedInt</u></td> <td>-</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Decrement</td>
+            <td>--a</td> <td><u>FixedInt</u></td> <td>-</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Equality</td>
+            <td>a == b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>bool</td></tr>
+       <tr><td>Order</td>
+            <td>a &lt;&gt; b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>bool</td></tr>
+       <tr><td>Casting</td>
+            <td>cast(B)a</td>
+            <td><u>FixedInt</u></td>
+            <td>integrals, floats, chars, bool or <u>FixedInt</u></td>
+            <td>B</td></tr>
+       <tr><td>Logical and</td>
+            <td>a &amp; b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Logical or</td>
+            <td>a | b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Logical xor</td>
+            <td>a ^ b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Addition</td>
+            <td>a + b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Substraction</td>
+            <td>a - b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Multiplication</td>
+            <td>a * b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Division</td>
+            <td>a / b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Modulo</td>
+            <td>a % b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Shift left</td>
+            <td>a &lt;&lt; b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars or bool</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Shift right</td>
+            <td>a &gt;&gt;&gt; b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars or bool</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Arithmetic shift right</td>
+            <td>a &gt;&gt; b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars or bool</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Shift left</td>
+            <td>a &lt;&lt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>A</td></tr>
+       <tr><td>Shift right</td>
+            <td>a &gt;&gt;&gt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>A</td></tr>
+       <tr><td>Arithmetic shift right</td>
+            <td>a &gt;&gt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>A</td></tr>
+       <tr><td>Power</td>
+            <td>a ^^ b</td> <td><u>FixedInt</u></td>
+            <td>integrals, chars or bool</td>
+            <td><u>FixedInt</u></td></tr>
+       <tr><td>Power</td>
+            <td>a ^^ b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>A</td></tr>
+   </table>
+
+<br><br>
+<b>Notes:</b><br>
+All operators are <font color=blue>@safe pure nothrow @nogc</font>;<br/>
+   D standard integer promotion rules are implemented;<br/>
+   Comparison and equality operators take into account the sign, therefore uint96.max will not be equal to -1 and comparing signed and unsigned operands is defined behaviour.<br/><br><br>
+
+<dl><dt><big><a name="FixedInt.min"></a>enum auto <u>min</u>;
+<br><a name="FixedInt.max"></a>enum auto <u>max</u>;
+</big></dt>
+<dd>minimum and maximum representable values<br><br>
+
+</dd>
+<dt><big><a name="FixedInt.this"></a>pure nothrow @nogc @safe this(T)(auto ref const T <i>x</i>) if (isIntegral!T || isSomeChar!T || is(Unqual!T == bool));
+</big></dt>
+<dd>Constructs a fixed size integer from a built in integral, character or
+ boolean type.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>T <i>x</i></td>
+<td>any integral, character, or boolean value.</td></tr>
+</table><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint96(42) == 42);
+<font color=blue>assert</font>(int96(-10) == -10);
+<font color=blue>assert</font>(uint128('A') == 65);
+<font color=blue>assert</font>(int160(<font color=blue>true</font>) == 1);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.this.2"></a>pure nothrow @nogc @safe this(T)(auto ref const T <i>x</i>) if (isFixedInt!T &amp;&amp; T.sizeof &lt;= this.sizeof);
+<br>this(T)(auto ref const T <i>x</i>) if (isFixedInt!T &amp;&amp; T.sizeof &gt; this.sizeof);
+</big></dt>
+<dd>Constructs a fixed size integer from another one.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>T <i>x</i></td>
+<td>any fixed size integer</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the specified value does not
+  fit in the current one.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint128(uint96(42)) == 42);
+<font color=blue>assert</font>(int96(int128(-42)) == -42);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.this.3"></a>@safe this(S)(auto ref const S <i>s</i>) if (isSomeString!S);
+<br>@safe this(S)(auto ref const S <i>s</i>, const uint <i>radix</i>) if (isSomeString!S);
+<br>this(R)(ref R <i>range</i>) if (isInputRange!R &amp;&amp; isSomeChar!(ElementType!R) &amp;&amp; !isSomeString!R);
+<br>this(R)(ref R <i>range</i>, const uint <i>radix</i>) if (isInputRange!R &amp;&amp; isSomeChar!(ElementType!R) &amp;&amp; !isSomeString!R);
+</big></dt>
+<dd>Constructs a fixed size integer from a string value or a <i>range</i> of input
+ characters
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>S <i>s</i></td>
+<td>a string that contains decimal, hexadecimal, octal or binary digits
+      or any other digit if a <i>radix</i> is provided;</td></tr>
+<tr><td>R <i>range</i></td>
+<td>a character input <i>range</i> that contains decimal, hexadecimal, octal
+      or binary digits or any other digit if a <i>radix</i> is provided;</td></tr>
+<tr><td>uint <i>radix</i></td>
+<td>a value between 2 and 36 representing the number base.</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the value does not fit in
+  the current FixedInt type;<br/>
+  <a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified string is empty or
+  contains invalid characters;<br/>
+  <a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified <i>radix</i> is outside the
+  interval [2; 36].
+<br><br>
+<b>Notes:</b><br>
+Strings starting with <b>0x</b> or <b>0X</b> will be interpreted as
+   hexadecimal;<br/>
+   Strings starting with <b>0b</b> or <b>0B</b> will be interpreted as
+   binary;<br/>
+   Strings starting with <b>0o</b> or <b>0O</b> will be interpreted as
+   octal;<br/>
+   String prefixes are accepted only if a <i>radix</i> is not provided;<br/>
+   Strings without any prefix will be interpreted as decimal if a <i>radix</i>
+   is not provided;<br/>
+   <b>+/-</b> sign is accepted only for decimal input strings and if a
+   <i>radix</i> is not provided;<br/>
+   Underscore characters are ignored.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint128(<font color=red>"123"</font>) == 123);
+<font color=blue>assert</font>(uint128(<font color=red>"0xFFFFFFFF"</font>) == 0xFFFFFFFF);
+<font color=blue>assert</font>(uint128(<font color=red>"0b10101010"</font>) == 0b10101010);
+<font color=blue>assert</font>(uint128(<font color=red>"0o666"</font>) == 0x1b6);
+<font color=blue>assert</font>(int128(<font color=red>"-42"</font>) == -42);
+<font color=blue>assert</font>(int128(<font color=red>"+42"</font>) == 42);
+
+<font color=blue>assert</font>(uint128(<font color=red>"9999"</font>, 10) == 9999);
+<font color=blue>assert</font>(uint128(<font color=red>"AAAA"</font>, 16) == 0xAAAA);
+<font color=blue>assert</font>(uint128(<font color=red>"1111"</font>, 2) == 0b1111);
+
+<font color=blue>assert</font>(uint96(<font color=red>"123_456_789"</font>) == 123456789);
+<font color=blue>assert</font>(int96(<font color=red>"0xABCD_EF00"</font>) == 0xABCDEF00);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.this.4"></a>@safe this(F)(auto ref const F <i>x</i>) if (isFloatingPoint!F);
+</big></dt>
+<dd>Constructs a fixed size integer from a floating point value
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>any floating point value.</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the floating point value is NaN or
+  cannot be represented exactly as a FixedInt ;<br/>
+  <a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the floating point value is
+  not finite, it does not fit in the current fixed size integer,
+  or is underflowing towards 0.
+<br><br>
+<b>Notes:</b><br>
+Only 80-bit <font color=blue>real</font> type is supported. Other real types are
+  converted to <font color=blue>double</font> before the construction;<br/><br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint128(0.0) == 0);
+<font color=blue>assert</font>(uint128(129.0) == 129);
+<font color=blue>assert</font>(uint128(1.23E+3) == 1230);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.this.5"></a>pure @trusted this(A)(auto ref const A <i>array</i>) if (isArray!A &amp;&amp; !isSomeString!A);
+<br>pure @trusted this(R)(ref R <i>range</i>) if (isInputRange!R &amp;&amp; !isArray!R &amp;&amp; !isSomeChar!(ElementType!R));
+</big></dt>
+<dd>Constructs a fixed size integer using an array or range of any type
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>A <i>array</i></td>
+<td>an array of data</td></tr>
+<tr><td>R <i>range</i></td>
+<td>a data range</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the specified array or range
+  does not fit in the current fixed size integer
+<br><br>
+<b>Notes:</b><br>
+The most significant bit of the array or range data will set the sign.<br/>
+  Character ranges or strings are interpreted as decimal numbers, not as raw data.
+  Using a character range or string will call one of the <a href="#FixedInt.this.3">string constructors</a><br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=green>//assert(uint128([12]) == 12);
+</font><font color=green>//assert(uint128([0xAA, 0xBB]) == 0xBBAA);
+</font></pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.toHash"></a>const pure nothrow @nogc @safe size_t <u>toHash</u>();
+</big></dt>
+<dd>Calculates a hash key for the current FixedInt value
+<br><br>
+<b>Returns:</b><br>
+a unique hash value
+<br><br>
+<b>Notes:</b><br>
+This function is not intended to be used directly, but it's
+   used internally by associative arrays.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+string[int96] dictionary;
+dictionary[int96(0)] = <font color=red>"zero"</font>;
+dictionary[int96(10)] = <font color=red>"ten"</font>;
+
+<font color=blue>assert</font>(dictionary[int96(0)] == <font color=red>"zero"</font>);
+<font color=blue>assert</font>(dictionary[int96(10)] == <font color=red>"ten"</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.toString"></a>const pure nothrow @safe string <u>toString</u>();
+</big></dt>
+<dd>Converts the current FixedInt value to its default decimal
+ string representation
+<br><br>
+<b>Returns:</b><br>
+A base-10 representation of the current FixedInt value<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint96(123).<u>toString</u>() == <font color=red>"123"</font>);
+<font color=blue>assert</font>(int128(-25).<u>toString</u>() == <font color=red>"-25"</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.toString.2"></a>const void <u>toString</u>(C)(scope void delegate(const(C)[]) <i>sink</i>, ref FormatSpec!char <i>f</i>) if (isSomeChar!C);
+</big></dt>
+<dd>Converts the current FixedInt value to its a string
+ representation using the specified format
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>void delegate(const(C)[]) <i>sink</i></td>
+<td>a delegate for accepting custom segments of the
+   formatted string.</td></tr>
+<tr><td>FormatSpec!char <i>f</i></td>
+<td>a format string specifying the output format.</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_format.html#FormatException">FormatException</a> if the format specifier
+   is not supported.
+<br><br>
+<b>Notes:</b><br>
+This function is not supposed to be used directly, but it's used
+   internally by the standard library <a href="https://dlang.org/phobos/std_format.html#format">format</a> or
+   <a href="https://dlang.org/phobos/std_stdio.html#writef">writef</a>. <br/>
+   Supported format specifiers:<ul>
+   <li><b>%d</b> - signed decimal</li>
+   <li><b>%i</b> - signed decimal</li>
+   <li><b>%u</b> - unsigned decimal</li>
+   <li><b>%x</b> - unsigned hexadecimal (lowercase)</li>
+   <li><b>%X</b> - unsigned hexadecimal (uppercase)</li>
+   <li><b>%o</b> - unsigned octal</li>
+   <li><b>%b</b> - unsigned binary</li>
+   <li><b>%s</b> - default string representation</li>
+   </ul><br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>import</font> std.format;
+<font color=blue>assert</font>(format(<font color=red>"%d in hex is %x or in octal is %o"</font>, 
+              uint96(123), int96(123), uint128(123)) ==
+       <font color=red>"123 in hex is 7b or in octal is 173"</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.to"></a>const @safe S <u>to</u>(S)(const uint <i>radix</i> = 10, const LetterCase <i>lettercase</i> = LetterCase.upper) if (isSomeString!S);
+</big></dt>
+<dd>Converts the current FixedInt value <u>to</u> its custom base representation
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>uint <i>radix</i></td>
+<td>a base used <u>to</u> convert;</td></tr>
+<tr><td>LetterCase <i>lettercase</i></td>
+<td>casing used if <i>radix</i> is greater than 10.</td></tr>
+</table><br>
+<b>Throws:</b><br>
+<a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified <i>radix</i> is outside the
+  interval [2; 36].<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font>(uint96(123).<u>to</u>!string(10) == <font color=red>"123"</font>);
+<font color=blue>assert</font>(uint96(123).<u>to</u>!string(16, LetterCase.lower) == <font color=red>"7b"</font>);
+<font color=blue>assert</font>(uint96(123).<u>to</u>!string(16, LetterCase.upper) == <font color=red>"7B"</font>);
+<font color=blue>assert</font>(uint96(123).<u>to</u>!string(36) == <font color=red>"3F"</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.toChars"></a>pure nothrow @nogc @safe auto <u>toChars</u>(uint radix = 10, C = char, LetterCase letterCase = LetterCase.upper)() if (isSomeChar!C);
+</big></dt>
+<dd>Converts the current fixed size integer to its equivalent character range representation
+ using the specified radix
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>radix</td>
+<td>a radix between 2 and 36 used to convert the input value.</td></tr>
+<tr><td>letterCase</td>
+<td>choose between character case for radixes greater than 10.</td></tr>
+</table><br>
+<b>Returns:</b><br>
+A range of characters representing of the current fixed size integer.
+<br><br>
+<b>Notes:</b><br>
+Negative values are prefixed with minus sign(-) only if radix is 10.<br><br>
+
+</dd>
+<dt><big><a name="FixedInt.toBytes"></a>const pure nothrow @safe ubyte[] <u>toBytes</u>();
+<br><a name="FixedInt.toRange"></a>const pure nothrow @nogc @safe auto <u>toRange</u>();
+</big></dt>
+<dd>Converts the current fixed size integer to an array or range of byte data
+<br><br>
+<b>Returns:</b><br>
+A byte array or a range of bytes as the internal representation of the
+   current fixed size integer.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=green>//assert(uint96(0xAABB).toBytes() == [0xBB, 0xAA]);
+</font></pre>
+<br><br>
+</dd>
+<dt><big><a name="FixedInt.digits"></a>const pure nothrow @nogc @property @safe uint <u>digits</u>();
+</big></dt>
+<dd>Calculates the number of decimal digits
+<br><br>
+<b>Returns:</b><br>
+Number of decimal digits for the current value or 0 for a zero value.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=green>//assert(uint96(123).digits == 3);
+</font><font color=green>//assert(int128(-12345).digits == 5);
+</font><font color=green>//assert(uint128.max.digits == 38);
+</font></pre>
+<br><br>
+</dd>
+</dl>
+</dd>
+<dt><big><a name="isPowerOf2"></a>pure nothrow @nogc @safe bool <u>isPowerOf2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Check whether a number is a power of two.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+<b>true</b> <i>x</i> that is a power of two, otherwise <b>false</b>. Zero values are not considered powers of 2.<br><br>
+
+</dd>
+<dt><big><a name="nextPow2"></a>pure nothrow @nogc @safe auto <u>nextPow2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Gives the next power of two.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The next value after <i>x</i> that is a power of two, zero if <i>x</i> is 0.<br><br>
+
+</dd>
+<dt><big><a name="truncPow2"></a>pure nothrow @nogc @safe auto <u>truncPow2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Gives the previous power of two.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The previous value before <i>x</i> that is a power of two, <i>x</i> itself if it's already a power of two, zero if <i>x</i> is 0.<br><br>
+
+</dd>
+<dt><big><a name="isFixedInt"></a>enum auto <u>isFixedInt</u>(T);
+</big></dt>
+<dd>Detects whether T is a fixed integral type.
+ Built-in integral types are not considered<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>static</font> <font color=blue>assert</font> (<u>isFixedInt</u>!uint128);
+<font color=blue>static</font> <font color=blue>assert</font> (<u>isFixedInt</u>!int128);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isFixedInt</u>!<font color=blue>uint</font>);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isFixedInt</u>!<font color=blue>int</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="isUnsignedFixedInt"></a>enum auto <u>isUnsignedFixedInt</u>(T);
+</big></dt>
+<dd>Detects whether T is an unsigned fixed integral type.
+ Built-in integral types are not considered<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>static</font> <font color=blue>assert</font> (<u>isUnsignedFixedInt</u>!uint128);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isUnsignedFixedInt</u>!int128);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isUnsignedFixedInt</u>!<font color=blue>uint</font>);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isUnsignedFixedInt</u>!<font color=blue>int</font>);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="isSignedFixedInt"></a>enum auto <u>isSignedFixedInt</u>(T);
+</big></dt>
+<dd>Detects whether T is a signed fixed integral type.
+ Built-in integral types are not considered<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isSignedFixedInt</u>!uint128);
+<font color=blue>static</font> <font color=blue>assert</font> (<u>isSignedFixedInt</u>!int128);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isSignedFixedInt</u>!<font color=blue>uint</font>);
+<font color=blue>static</font> <font color=blue>assert</font> (!<u>isSignedFixedInt</u>!<font color=blue>int</font>);
+</pre>
+<br><br>
+</dd>
+</dl>
+
+           </body></html>

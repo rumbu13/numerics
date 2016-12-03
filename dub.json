@@ -1,0 +1,33 @@
+{
+	"name": "numerics",
+	"authors": [
+		"Razvan Stefanescu"
+	],
+	"description": "Numeric data types for D",
+	"copyright": "Copyright 2016, Razvan Stefanescu",
+	"license": "boost",
+	"targetType": "library",
+	"sourcePaths": [],
+	"configurations": [
+		{
+			"name": "library",
+			"targetType": "library",
+			"targetPath": "lib",
+			"sourcePaths" : ["src/numerics"]	
+		},
+		{
+			"name": "unittest",
+			"targetType": "executable",
+			"targetPath": "bin",
+			"sourcePaths" : ["src/test"],	
+			"mainSourceFile" : "src/test/main.d"			
+		},		
+		{
+			"name": "bench",
+			"targetType": "executable",
+			"targetPath": "bin",
+			"sourcePaths" : ["src/bench"],	
+			"mainSourceFile" : "src/bench/bench.d"			
+		}
+	]
+}

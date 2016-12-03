@@ -1,0 +1,6 @@
+C:\git\numerics\bin\gen.exe.config
+C:\git\numerics\bin\gen.exe
+C:\git\numerics\bin\gen.pdb
+C:\git\numerics\src\gen\obj\Debug\gen.csprojResolveAssemblyReference.cache
+C:\git\numerics\src\gen\obj\Debug\gen.exe
+C:\git\numerics\src\gen\obj\Debug\gen.pdb

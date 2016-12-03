@@ -1,0 +1,6 @@
+numerics\internal\arrays.d 
+numerics\internal\chars.d 
+numerics\internal\floats.d 
+numerics\internal\integrals.d 
+numerics\internal\strings.d 
+numerics\fixed.d 

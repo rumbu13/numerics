@@ -1,0 +1,5991 @@
+[
+ {
+  "name" : "numerics.internal.arrays",
+  "kind" : "module",
+  "file" : "numerics\\internal\\arrays.d",
+  "comment" : " Array functions\n\n Copyright: Copyright Răzvan Ștefănescu 2016.\n License:   $(WEB www.boost.org/LICENSE_1_0.txt, Boost License 1.0).\n Authors:   Răzvan Ștefănescu\n Source:    $(NUMERICSSRC internal/arrays.d)\n",
+  "members" : [
+   {
+    "name" : "numerics.internal.integrals",
+    "kind" : "import",
+    "line" : 11,
+    "char" : 8,
+    "protection" : "private"
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "alias",
+    "line" : 13,
+    "char" : 1
+   },
+   {
+    "name" : "clz",
+    "kind" : "alias",
+    "line" : 14,
+    "char" : 1
+   },
+   {
+    "name" : "ctz",
+    "kind" : "alias",
+    "line" : 15,
+    "char" : 1
+   },
+   {
+    "name" : "ZERO_BITS",
+    "kind" : "variable",
+    "line" : 18,
+    "char" : 6,
+    "storageClass" : [
+     "enum"
+    ],
+    "deco" : "k",
+    "init" : "0u"
+   },
+   {
+    "name" : "ONE_BITS",
+    "kind" : "variable",
+    "line" : 19,
+    "char" : 6,
+    "storageClass" : [
+     "enum"
+    ],
+    "deco" : "k",
+    "init" : "4294967295u"
+   },
+   {
+    "name" : "SIGN_BITS",
+    "kind" : "variable",
+    "line" : 20,
+    "char" : 6,
+    "storageClass" : [
+     "enum"
+    ],
+    "deco" : "k",
+    "init" : "2147483648u"
+   },
+   {
+    "name" : "all_generic",
+    "kind" : "function",
+    "protection" : "private",
+    "line" : 24,
+    "char" : 14,
+    "deco" : "FNaNbNiNfAxkxkZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 30,
+    "endchar" : 1
+   },
+   {
+    "name" : "all",
+    "kind" : "function",
+    "line" : 33,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxkZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 75,
+    "endchar" : 1
+   },
+   {
+    "name" : "mov",
+    "kind" : "function",
+    "comment" : "x = y;\n",
+    "line" : 79,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 84,
+    "endchar" : 1
+   },
+   {
+    "name" : "movs",
+    "kind" : "function",
+    "comment" : "x = y;\n",
+    "line" : 89,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxiZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 94,
+    "endchar" : 1
+   },
+   {
+    "name" : "mov",
+    "kind" : "function",
+    "comment" : "x = y\n",
+    "line" : 98,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 104,
+    "endchar" : 1
+   },
+   {
+    "name" : "movs",
+    "kind" : "function",
+    "line" : 107,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxlZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 113,
+    "endchar" : 1
+   },
+   {
+    "name" : "mov",
+    "kind" : "function",
+    "comment" : "x = y;\n",
+    "line" : 117,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 122,
+    "endchar" : 1
+   },
+   {
+    "name" : "movs",
+    "kind" : "function",
+    "comment" : "x = y;\n",
+    "line" : 126,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 131,
+    "endchar" : 1
+   },
+   {
+    "name" : "equuu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 135,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxkZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 143,
+    "endchar" : 1
+   },
+   {
+    "name" : "equuu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 147,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxmZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 157,
+    "endchar" : 1
+   },
+   {
+    "name" : "equuu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 161,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkAxkZb",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 169,
+    "endchar" : 1
+   },
+   {
+    "name" : "equss",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 173,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxiZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 181,
+    "endchar" : 1
+   },
+   {
+    "name" : "equss",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 185,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxlZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 195,
+    "endchar" : 1
+   },
+   {
+    "name" : "equss",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 199,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkAxkZb",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 214,
+    "endchar" : 1
+   },
+   {
+    "name" : "equus",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 218,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxiZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 221,
+    "endchar" : 1
+   },
+   {
+    "name" : "equus",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 225,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxlZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 228,
+    "endchar" : 1
+   },
+   {
+    "name" : "equus",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 232,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkAxkZb",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 235,
+    "endchar" : 1
+   },
+   {
+    "name" : "equsu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 239,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxkZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 242,
+    "endchar" : 1
+   },
+   {
+    "name" : "equsu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 246,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxmZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const(uint)[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 249,
+    "endchar" : 1
+   },
+   {
+    "name" : "equsu",
+    "kind" : "function",
+    "comment" : "x == y\n",
+    "line" : 253,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkAxkZb",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 256,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpuu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 260,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxkZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 271,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpuu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 275,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxmZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 287,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpuu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 291,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkAxkZi",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 306,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpss",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 310,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxiZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 341,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpss",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 345,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxlZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 382,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpss",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 386,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkAxkZi",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 408,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpus",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 412,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxiZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 418,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpus",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 422,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxlZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 428,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpus",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 433,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkAxkZi",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 439,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpsu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 443,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxkZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 449,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpsu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 453,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkxmZi",
+    "originalType" : "pure nothrow @nogc @safe int(const(uint)[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 459,
+    "endchar" : 1
+   },
+   {
+    "name" : "cmpsu",
+    "kind" : "function",
+    "comment" : "x ? y\n",
+    "line" : 463,
+    "char" : 5,
+    "deco" : "FNaNbNiNfAxkAxkZi",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 469,
+    "endchar" : 1
+   },
+   {
+    "name" : "or",
+    "kind" : "function",
+    "line" : 474,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 478,
+    "endchar" : 1
+   },
+   {
+    "name" : "or",
+    "kind" : "function",
+    "line" : 483,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] z, const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "z",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 489,
+    "endchar" : 1
+   },
+   {
+    "name" : "or",
+    "kind" : "function",
+    "line" : 494,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 499,
+    "endchar" : 1
+   },
+   {
+    "name" : "or",
+    "kind" : "function",
+    "line" : 505,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 509,
+    "endchar" : 1
+   },
+   {
+    "name" : "ors",
+    "kind" : "function",
+    "line" : 514,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxiZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 520,
+    "endchar" : 1
+   },
+   {
+    "name" : "ors",
+    "kind" : "function",
+    "line" : 525,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxlZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 532,
+    "endchar" : 1
+   },
+   {
+    "name" : "ors",
+    "kind" : "function",
+    "line" : 537,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 543,
+    "endchar" : 1
+   },
+   {
+    "name" : "and",
+    "kind" : "function",
+    "line" : 548,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 553,
+    "endchar" : 1
+   },
+   {
+    "name" : "and",
+    "kind" : "function",
+    "line" : 558,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 564,
+    "endchar" : 1
+   },
+   {
+    "name" : "and",
+    "kind" : "function",
+    "line" : 569,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 574,
+    "endchar" : 1
+   },
+   {
+    "name" : "ands",
+    "kind" : "function",
+    "line" : 579,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxiZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 585,
+    "endchar" : 1
+   },
+   {
+    "name" : "ands",
+    "kind" : "function",
+    "line" : 590,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxlZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 597,
+    "endchar" : 1
+   },
+   {
+    "name" : "ands",
+    "kind" : "function",
+    "line" : 602,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 608,
+    "endchar" : 1
+   },
+   {
+    "name" : "xor",
+    "kind" : "function",
+    "line" : 613,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 617,
+    "endchar" : 1
+   },
+   {
+    "name" : "xor",
+    "kind" : "function",
+    "line" : 622,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 627,
+    "endchar" : 1
+   },
+   {
+    "name" : "xor",
+    "kind" : "function",
+    "line" : 632,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 636,
+    "endchar" : 1
+   },
+   {
+    "name" : "xors",
+    "kind" : "function",
+    "line" : 641,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxiZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const int y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xi"
+     }
+    ],
+    "endline" : 647,
+    "endchar" : 1
+   },
+   {
+    "name" : "xors",
+    "kind" : "function",
+    "line" : 652,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxlZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const long y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xl"
+     }
+    ],
+    "endline" : 659,
+    "endchar" : 1
+   },
+   {
+    "name" : "xors",
+    "kind" : "function",
+    "line" : 664,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 670,
+    "endchar" : 1
+   },
+   {
+    "name" : "not",
+    "kind" : "function",
+    "line" : 674,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     }
+    ],
+    "endline" : 677,
+    "endchar" : 1
+   },
+   {
+    "name" : "inc",
+    "kind" : "function",
+    "line" : 681,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     }
+    ],
+    "endline" : 720,
+    "endchar" : 1
+   },
+   {
+    "name" : "dec",
+    "kind" : "function",
+    "line" : 723,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     }
+    ],
+    "endline" : 763,
+    "endchar" : 1
+   },
+   {
+    "name" : "neg",
+    "kind" : "function",
+    "line" : 766,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkZv",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     }
+    ],
+    "endline" : 817,
+    "endchar" : 1
+   },
+   {
+    "name" : "add",
+    "kind" : "function",
+    "comment" : "x += y\n",
+    "line" : 821,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 826,
+    "endchar" : 1
+   },
+   {
+    "name" : "add",
+    "kind" : "function",
+    "comment" : "x += y\n",
+    "line" : 831,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 839,
+    "endchar" : 1
+   },
+   {
+    "name" : "add",
+    "kind" : "function",
+    "comment" : "x += y\n",
+    "line" : 843,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 919,
+    "endchar" : 1
+   },
+   {
+    "name" : "sub",
+    "kind" : "function",
+    "comment" : "x -= y\n",
+    "line" : 923,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 929,
+    "endchar" : 1
+   },
+   {
+    "name" : "sub",
+    "kind" : "function",
+    "comment" : "x -= y\n",
+    "line" : 934,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxmZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const ulong y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 943,
+    "endchar" : 1
+   },
+   {
+    "name" : "sub",
+    "kind" : "function",
+    "comment" : "x -= y\n",
+    "line" : 947,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1029,
+    "endchar" : 1
+   },
+   {
+    "name" : "shl",
+    "kind" : "function",
+    "comment" : "x <<= y\n",
+    "line" : 1033,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const size_t y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1061,
+    "endchar" : 1
+   },
+   {
+    "name" : "shr",
+    "kind" : "function",
+    "comment" : "x >>>= y\n",
+    "line" : 1065,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const size_t y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1093,
+    "endchar" : 1
+   },
+   {
+    "name" : "sahr",
+    "kind" : "function",
+    "comment" : "x >>= y\n",
+    "line" : 1097,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZv",
+    "originalType" : "pure nothrow @nogc @safe void(uint[] x, const size_t y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1127,
+    "endchar" : 1
+   },
+   {
+    "name" : "mul_basecase",
+    "kind" : "function",
+    "comment" : "x *= y\n",
+    "line" : 1131,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1188,
+    "endchar" : 1
+   },
+   {
+    "name" : "mul",
+    "kind" : "function",
+    "comment" : "x *= y\n",
+    "line" : 1192,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1242,
+    "endchar" : 1
+   },
+   {
+    "name" : "mul_basecase",
+    "kind" : "function",
+    "comment" : "z = x * y\n",
+    "line" : 1247,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkAxkZv",
+    "parameters" : [
+     {
+      "name" : "z",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1337,
+    "endchar" : 1
+   },
+   {
+    "name" : "squ_basecase",
+    "kind" : "function",
+    "comment" : "z = x^^2\n",
+    "line" : 1342,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "z",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1361,
+    "endchar" : 1
+   },
+   {
+    "name" : "mul",
+    "kind" : "function",
+    "comment" : "z = x * y\n",
+    "line" : 1365,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkAxkZv",
+    "parameters" : [
+     {
+      "name" : "z",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1425,
+    "endchar" : 1
+   },
+   {
+    "name" : "squ",
+    "kind" : "function",
+    "comment" : "z = x * y\n",
+    "line" : 1430,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkZv",
+    "parameters" : [
+     {
+      "name" : "z",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1455,
+    "endchar" : 1
+   },
+   {
+    "name" : "divrem_basecase",
+    "kind" : "function",
+    "comment" : "x /= y, returns x % y\n",
+    "line" : 1461,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1507,
+    "endchar" : 1
+   },
+   {
+    "name" : "rem_basecase",
+    "kind" : "function",
+    "comment" : "returns x % y\n",
+    "line" : 1511,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1554,
+    "endchar" : 1
+   },
+   {
+    "name" : "divrem",
+    "kind" : "function",
+    "comment" : "x /= y, returns x % y\n",
+    "line" : 1558,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1625,
+    "endchar" : 1
+   },
+   {
+    "name" : "rem",
+    "kind" : "function",
+    "comment" : "returns x % y\n",
+    "line" : 1630,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkxkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(const(uint)[] x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1661,
+    "endchar" : 1
+   },
+   {
+    "name" : "divrem_basecase",
+    "kind" : "function",
+    "comment" : "q = x / y, r = x % y\n",
+    "line" : 1666,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAkAxkAxkZv",
+    "parameters" : [
+     {
+      "name" : "q",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "r",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1739,
+    "endchar" : 1
+   },
+   {
+    "name" : "xmul",
+    "kind" : "function",
+    "line" : 1745,
+    "char" : 7,
+    "deco" : "FNaNbNiNfxkxkZm",
+    "originalType" : "pure nothrow @nogc @safe ulong(const uint x, const uint y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xk"
+     },
+     {
+      "name" : "y",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 1760,
+    "endchar" : 1
+   },
+   {
+    "name" : "divrem",
+    "kind" : "function",
+    "comment" : "q = x / y, r = x % y\n",
+    "line" : 1764,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAkAxkAxkZv",
+    "parameters" : [
+     {
+      "name" : "q",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "r",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1824,
+    "endchar" : 1
+   },
+   {
+    "name" : "rem",
+    "kind" : "function",
+    "comment" : "q = x / y, r = x % y\n",
+    "line" : 1828,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAkAxkAxkZv",
+    "parameters" : [
+     {
+      "name" : "r",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     },
+     {
+      "name" : "y",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 1881,
+    "endchar" : 1
+   },
+   {
+    "name" : "adjust_division_down",
+    "kind" : "function",
+    "protection" : "private",
+    "line" : 1884,
+    "char" : 14,
+    "deco" : "FNaNbNiNfAkxAkmZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint[] y, ulong q)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xAk"
+     },
+     {
+      "name" : "q",
+      "deco" : "m"
+     }
+    ],
+    "endline" : 1954,
+    "endchar" : 1
+   },
+   {
+    "name" : "adjust_division_up",
+    "kind" : "function",
+    "protection" : "private",
+    "line" : 1957,
+    "char" : 14,
+    "deco" : "FNaNbNiNfAkxAkZk",
+    "originalType" : "pure nothrow @nogc @safe uint(uint[] x, const uint[] y)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "y",
+      "deco" : "xAk"
+     }
+    ],
+    "endline" : 2011,
+    "endchar" : 1
+   },
+   {
+    "name" : "used_generic",
+    "kind" : "function",
+    "protection" : "private",
+    "line" : 2014,
+    "char" : 16,
+    "deco" : "FNaNbNiNfAxkZk",
+    "originalType" : "pure nothrow @nogc @safe size_t(const(uint)[] x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2022,
+    "endchar" : 1
+   },
+   {
+    "name" : "used",
+    "kind" : "function",
+    "comment" : "counts non zero elements\n",
+    "line" : 2026,
+    "char" : 8,
+    "deco" : "FNaNbNiNfAxkZk",
+    "originalType" : "pure nothrow @nogc @safe size_t(const(uint)[] x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2065,
+    "endchar" : 1
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "function",
+    "comment" : "returns true if x is a power f two\n",
+    "line" : 2070,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2074,
+    "endchar" : 1
+   },
+   {
+    "name" : "clz",
+    "kind" : "function",
+    "comment" : "returns leading zeros of x\n",
+    "line" : 2078,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfAxkZi",
+    "originalType" : "pure nothrow @nogc @safe (const(uint)[] x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2084,
+    "endchar" : 1
+   },
+   {
+    "name" : "ctz",
+    "kind" : "function",
+    "comment" : "returns trailing zeros of x\n",
+    "line" : 2088,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfAxkZk",
+    "originalType" : "pure nothrow @nogc @safe (const(uint)[] x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2094,
+    "endchar" : 1
+   },
+   {
+    "name" : "hash",
+    "kind" : "function",
+    "line" : 2097,
+    "char" : 6,
+    "deco" : "FNaNbNiNfAxkZk",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "Axk"
+     }
+    ],
+    "endline" : 2105,
+    "endchar" : 1
+   },
+   {
+    "name" : "_arraySliceSliceOrass_k",
+    "kind" : "function",
+    "deco" : "UNaNbNiNeAkxAkZAk",
+    "originalType" : "pure nothrow @nogc @trusted extern (C) uint[](uint[] p1, const const(uint)[] p0)",
+    "parameters" : [
+     {
+      "name" : "p1",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "p0",
+      "deco" : "xAk"
+     }
+    ]
+   },
+   {
+    "name" : "_arraySliceSliceAndass_k",
+    "kind" : "function",
+    "deco" : "UNaNbNiNeAkxAkZAk",
+    "originalType" : "pure nothrow @nogc @trusted extern (C) uint[](uint[] p1, const const(uint)[] p0)",
+    "parameters" : [
+     {
+      "name" : "p1",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "p0",
+      "deco" : "xAk"
+     }
+    ]
+   },
+   {
+    "name" : "_arraySliceSliceXorass_k",
+    "kind" : "function",
+    "deco" : "UNaNbNiNeAkxAkZAk",
+    "originalType" : "pure nothrow @nogc @trusted extern (C) uint[](uint[] p1, const const(uint)[] p0)",
+    "parameters" : [
+     {
+      "name" : "p1",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "p0",
+      "deco" : "xAk"
+     }
+    ]
+   },
+   {
+    "name" : "_arraySliceComSliceAssign_k",
+    "kind" : "function",
+    "deco" : "UNaNbNiNeAkxAkZAk",
+    "originalType" : "pure nothrow @nogc @trusted extern (C) uint[](uint[] p1, const uint[] p0)",
+    "parameters" : [
+     {
+      "name" : "p1",
+      "deco" : "Ak"
+     },
+     {
+      "name" : "p0",
+      "deco" : "xAk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name" : "numerics.internal.chars",
+  "kind" : "module",
+  "file" : "numerics\\internal\\chars.d",
+  "members" : [
+   {
+    "name" : "std.traits",
+    "kind" : "import",
+    "line" : 3,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "isSomeChar"
+    ]
+   },
+   {
+    "name" : "std.array",
+    "kind" : "import",
+    "line" : 4,
+    "char" : 8,
+    "protection" : "private"
+   },
+   {
+    "kind" : "template",
+    "line" : 7,
+    "char" : 3,
+    "name" : "digitToChar2",
+    "parameters" : [
+     {
+      "name" : "C",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isSomeChar!C",
+    "members" : [
+     {
+      "name" : "digitToChar2",
+      "kind" : "function",
+      "line" : 7,
+      "char" : 3,
+      "type" : "pure nothrow @nogc @safe C(const uint digit, const bool uppercase = true)",
+      "parameters" : [
+       {
+        "name" : "digit",
+        "deco" : "k",
+        "storageClass" : [
+         "const"
+        ]
+       },
+       {
+        "name" : "uppercase",
+        "deco" : "b",
+        "storageClass" : [
+         "const"
+        ],
+        "default" : "true"
+       }
+      ],
+      "endline" : 13,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "line" : 16,
+    "char" : 3,
+    "name" : "digitToChar",
+    "parameters" : [
+     {
+      "name" : "C",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isSomeChar!C",
+    "members" : [
+     {
+      "name" : "digitToChar",
+      "kind" : "function",
+      "line" : 16,
+      "char" : 3,
+      "type" : "pure nothrow @nogc @safe C(const uint digit, const bool uppercase = true)",
+      "parameters" : [
+       {
+        "name" : "digit",
+        "deco" : "k",
+        "storageClass" : [
+         "const"
+        ]
+       },
+       {
+        "name" : "uppercase",
+        "deco" : "b",
+        "storageClass" : [
+         "const"
+        ],
+        "default" : "true"
+       }
+      ],
+      "endline" : 21,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "line" : 24,
+    "char" : 5,
+    "name" : "charToDigit",
+    "parameters" : [
+     {
+      "name" : "C",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isSomeChar!C",
+    "members" : [
+     {
+      "name" : "charToDigit",
+      "kind" : "function",
+      "line" : 24,
+      "char" : 5,
+      "type" : "pure nothrow @nogc @safe int(const C c, const uint radix)",
+      "parameters" : [
+       {
+        "name" : "c",
+        "type" : "C",
+        "storageClass" : [
+         "const"
+        ]
+       },
+       {
+        "name" : "radix",
+        "deco" : "k",
+        "storageClass" : [
+         "const"
+        ]
+       }
+      ],
+      "endline" : 38,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "line" : 40,
+    "char" : 1,
+    "name" : "BufferedRange",
+    "parameters" : [
+     {
+      "name" : "C",
+      "kind" : "type"
+     },
+     {
+      "name" : "size",
+      "kind" : "value",
+      "deco" : "k"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "BufferedRange",
+      "kind" : "struct",
+      "line" : 40,
+      "char" : 1,
+      "members" : [
+       {
+        "name" : "lo",
+        "kind" : "variable",
+        "line" : 45,
+        "char" : 15,
+        "type" : "ptrdiff_t",
+        "init" : "-1"
+       },
+       {
+        "name" : "hi",
+        "kind" : "variable",
+        "line" : 45,
+        "char" : 24,
+        "type" : "ptrdiff_t",
+        "init" : "-1"
+       },
+       {
+        "name" : "buffer",
+        "kind" : "variable",
+        "line" : 46,
+        "char" : 20,
+        "type" : "Unqual!C[size]",
+        "init" : "void"
+       },
+       {
+        "name" : "empty",
+        "kind" : "function",
+        "line" : 47,
+        "char" : 20,
+        "type" : "@property bool()",
+        "endline" : 47,
+        "endchar" : 46
+       },
+       {
+        "name" : "front",
+        "kind" : "function",
+        "line" : 48,
+        "char" : 17,
+        "type" : "@property C()",
+        "endline" : 48,
+        "endchar" : 46
+       },
+       {
+        "name" : "back",
+        "kind" : "function",
+        "line" : 49,
+        "char" : 17,
+        "type" : "@property C()",
+        "endline" : 49,
+        "endchar" : 45
+       },
+       {
+        "name" : "popFront",
+        "kind" : "function",
+        "line" : 50,
+        "char" : 10,
+        "type" : "void()",
+        "endline" : 50,
+        "endchar" : 29
+       },
+       {
+        "name" : "popBack",
+        "kind" : "function",
+        "line" : 51,
+        "char" : 10,
+        "type" : "void()",
+        "endline" : 51,
+        "endchar" : 28
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name" : "numerics.internal.floats",
+  "kind" : "module",
+  "file" : "numerics\\internal\\floats.d",
+  "members" : [
+   {
+    "name" : "numerics.internal.integrals",
+    "kind" : "import",
+    "line" : 3,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "clz"
+    ]
+   },
+   {
+    "name" : "FU",
+    "kind" : "union",
+    "protection" : "private",
+    "line" : 5,
+    "char" : 9,
+    "members" : [
+     {
+      "name" : "f",
+      "kind" : "variable",
+      "line" : 7,
+      "char" : 11,
+      "deco" : "f",
+      "offset" : 0
+     },
+     {
+      "name" : "u",
+      "kind" : "variable",
+      "line" : 8,
+      "char" : 10,
+      "deco" : "k",
+      "offset" : 0
+     }
+    ]
+   },
+   {
+    "name" : "fpack",
+    "kind" : "function",
+    "comment" : "packs a float value\n",
+    "line" : 13,
+    "char" : 7,
+    "deco" : "FNaNbNiNfxbikZf",
+    "originalType" : "pure nothrow @nogc @safe float(const bool sign, int exp, uint mantissa)",
+    "parameters" : [
+     {
+      "name" : "sign",
+      "deco" : "xb"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i"
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "k"
+     }
+    ],
+    "endline" : 54,
+    "endchar" : 1
+   },
+   {
+    "name" : "funpack",
+    "kind" : "function",
+    "comment" : "unpacks a float value\n",
+    "line" : 58,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxfJiJkJbJbZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const float f, out int exp, out uint mantissa, out bool inf, out bool nan)",
+    "parameters" : [
+     {
+      "name" : "f",
+      "deco" : "xf"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "k",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "inf",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "nan",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     }
+    ],
+    "endline" : 84,
+    "endchar" : 1
+   },
+   {
+    "name" : "DU",
+    "kind" : "union",
+    "protection" : "private",
+    "line" : 87,
+    "char" : 9,
+    "members" : [
+     {
+      "name" : "d",
+      "kind" : "variable",
+      "line" : 89,
+      "char" : 12,
+      "deco" : "d",
+      "offset" : 0
+     },
+     {
+      "name" : "u",
+      "kind" : "variable",
+      "line" : 90,
+      "char" : 11,
+      "deco" : "m",
+      "offset" : 0
+     }
+    ]
+   },
+   {
+    "name" : "dpack",
+    "kind" : "function",
+    "comment" : "packs a double value\n",
+    "line" : 95,
+    "char" : 8,
+    "deco" : "FNaNbNiNfxbimZd",
+    "originalType" : "pure nothrow @nogc @safe double(const bool sign, int exp, ulong mantissa)",
+    "parameters" : [
+     {
+      "name" : "sign",
+      "deco" : "xb"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i"
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "m"
+     }
+    ],
+    "endline" : 137,
+    "endchar" : 1
+   },
+   {
+    "name" : "dunpack",
+    "kind" : "function",
+    "comment" : "unpacks a double value\n",
+    "line" : 141,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxdJiJmJbJbZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const double d, out int exp, out ulong mantissa, out bool inf, out bool nan)",
+    "parameters" : [
+     {
+      "name" : "d",
+      "deco" : "xd"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "m",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "inf",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "nan",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     }
+    ],
+    "endline" : 168,
+    "endchar" : 1
+   },
+   {
+    "name" : "RU",
+    "kind" : "union",
+    "protection" : "private",
+    "line" : 170,
+    "char" : 9,
+    "members" : [
+     {
+      "name" : "r",
+      "kind" : "variable",
+      "line" : 172,
+      "char" : 10,
+      "deco" : "e",
+      "offset" : 0
+     },
+     {
+      "name" : "e",
+      "kind" : "variable",
+      "line" : 175,
+      "char" : 16,
+      "deco" : "t",
+      "offset" : 0,
+      "align" : 1
+     },
+     {
+      "name" : "m",
+      "kind" : "variable",
+      "line" : 176,
+      "char" : 15,
+      "deco" : "m",
+      "offset" : 2,
+      "align" : 1
+     }
+    ]
+   },
+   {
+    "name" : "rpack",
+    "kind" : "function",
+    "comment" : "packs a real80 value\n",
+    "line" : 182,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxbimZe",
+    "originalType" : "pure nothrow @nogc @safe real(const bool sign, int exp, ulong mantissa)",
+    "parameters" : [
+     {
+      "name" : "sign",
+      "deco" : "xb"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i"
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "m"
+     }
+    ],
+    "endline" : 215,
+    "endchar" : 1
+   },
+   {
+    "name" : "runpack",
+    "kind" : "function",
+    "comment" : "unpacks a real80 value\n",
+    "line" : 220,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxeJiJmJbJbZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const real r, out int exp, out ulong mantissa, out bool inf, out bool nan)",
+    "parameters" : [
+     {
+      "name" : "r",
+      "deco" : "xe"
+     },
+     {
+      "name" : "exp",
+      "deco" : "i",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "mantissa",
+      "deco" : "m",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "inf",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     },
+     {
+      "name" : "nan",
+      "deco" : "b",
+      "storageClass" : [
+       "out"
+      ]
+     }
+    ],
+    "endline" : 246,
+    "endchar" : 1
+   }
+  ]
+ },
+ {
+  "name" : "numerics.internal.integrals",
+  "kind" : "module",
+  "file" : "numerics\\internal\\integrals.d",
+  "comment" : " Unsigned integer functions\n\n Copyright: Copyright Răzvan Ștefănescu 2016.\n License:   $(WEB www.boost.org/LICENSE_1_0.txt, Boost License 1.0).\n Authors:   Răzvan Ștefănescu\n Source:    $(NUMERICSSRC internal/integrals.d)\n",
+  "members" : [
+   {
+    "name" : "core.bitop",
+    "kind" : "import",
+    "line" : 11,
+    "char" : 16,
+    "protection" : "private",
+    "selective" : [
+     "bsr",
+     "bsf"
+    ]
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "function",
+    "comment" : "returns true if x is a power of 2\n",
+    "line" : 16,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxkZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const uint x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 19,
+    "endchar" : 1
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "function",
+    "comment" : "returns true if x is a power of 2\n",
+    "line" : 24,
+    "char" : 6,
+    "deco" : "FNaNbNiNfxmZb",
+    "originalType" : "pure nothrow @nogc @safe bool(const ulong x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 27,
+    "endchar" : 1
+   },
+   {
+    "name" : "clz",
+    "kind" : "function",
+    "comment" : "counts leading zeros\n",
+    "line" : 31,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfxkZi",
+    "originalType" : "pure nothrow @nogc @safe (const uint x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 34,
+    "endchar" : 1
+   },
+   {
+    "name" : "clz",
+    "kind" : "function",
+    "comment" : "counts leading zeros\n",
+    "line" : 38,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfxmZi",
+    "originalType" : "pure nothrow @nogc @safe (const ulong x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 54,
+    "endchar" : 1
+   },
+   {
+    "name" : "ctz",
+    "kind" : "function",
+    "comment" : "counts trailing zeros in a int\n",
+    "line" : 59,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfxkZi",
+    "originalType" : "pure nothrow @nogc @safe (const uint x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xk"
+     }
+    ],
+    "endline" : 62,
+    "endchar" : 1
+   },
+   {
+    "name" : "ctz",
+    "kind" : "function",
+    "comment" : "counts trailing zeros in a long\n",
+    "line" : 66,
+    "char" : 6,
+    "storageClass" : [
+     "auto"
+    ],
+    "deco" : "FNaNbNiNfxmZi",
+    "originalType" : "pure nothrow @nogc @safe (const ulong x)",
+    "parameters" : [
+     {
+      "name" : "x",
+      "deco" : "xm"
+     }
+    ],
+    "endline" : 82,
+    "endchar" : 1
+   }
+  ]
+ },
+ {
+  "name" : "numerics.internal.strings",
+  "kind" : "module",
+  "file" : "numerics\\internal\\strings.d",
+  "members" : [
+   {
+    "name" : "std.traits",
+    "kind" : "import",
+    "line" : 3,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "isSomeChar",
+     "isSomeString"
+    ]
+   },
+   {
+    "name" : "std.range.primitives",
+    "kind" : "import",
+    "line" : 4,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "isInputRange",
+     "ElementType"
+    ]
+   },
+   {
+    "name" : "Header",
+    "kind" : "enum",
+    "line" : 6,
+    "char" : 1,
+    "baseDeco" : "i",
+    "members" : [
+     {
+      "name" : "none",
+      "kind" : "enum member",
+      "value" : "0",
+      "line" : 8,
+      "char" : 5
+     },
+     {
+      "name" : "plus",
+      "kind" : "enum member",
+      "value" : "1",
+      "line" : 9,
+      "char" : 5
+     },
+     {
+      "name" : "minus",
+      "kind" : "enum member",
+      "value" : "2",
+      "line" : 10,
+      "char" : 5
+     },
+     {
+      "name" : "hex",
+      "kind" : "enum member",
+      "value" : "4",
+      "line" : 11,
+      "char" : 5
+     },
+     {
+      "name" : "oct",
+      "kind" : "enum member",
+      "value" : "8",
+      "line" : 12,
+      "char" : 5
+     },
+     {
+      "name" : "bin",
+      "kind" : "enum member",
+      "value" : "16",
+      "line" : 13,
+      "char" : 5
+     },
+     {
+      "name" : "zero",
+      "kind" : "enum member",
+      "value" : "32",
+      "line" : 14,
+      "char" : 5
+     },
+     {
+      "name" : "any",
+      "kind" : "enum member",
+      "value" : "31",
+      "line" : 15,
+      "char" : 5
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : "detects a string header\n",
+    "line" : 20,
+    "char" : 8,
+    "name" : "detect",
+    "parameters" : [
+     {
+      "name" : "S",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isSomeString!S",
+    "members" : [
+     {
+      "name" : "detect",
+      "kind" : "function",
+      "line" : 20,
+      "char" : 8,
+      "type" : "pure nothrow @nogc @safe Header(const Header expected, auto ref const S s, ref size_t index)",
+      "parameters" : [
+       {
+        "name" : "expected",
+        "type" : "Header",
+        "storageClass" : [
+         "const"
+        ]
+       },
+       {
+        "name" : "s",
+        "type" : "S",
+        "storageClass" : [
+         "auto",
+         "const",
+         "ref"
+        ]
+       },
+       {
+        "name" : "index",
+        "type" : "size_t",
+        "storageClass" : [
+         "ref"
+        ]
+       }
+      ],
+      "endline" : 80,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : "detects a string header\n",
+    "line" : 85,
+    "char" : 8,
+    "name" : "detect",
+    "parameters" : [
+     {
+      "name" : "R",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isInputRange!R && isSomeChar!(ElementType!R) && !isSomeString!R",
+    "members" : [
+     {
+      "name" : "detect",
+      "kind" : "function",
+      "line" : 85,
+      "char" : 8,
+      "type" : "pure nothrow @nogc @safe Header(const Header expected, ref R range)",
+      "parameters" : [
+       {
+        "name" : "expected",
+        "type" : "Header",
+        "storageClass" : [
+         "const"
+        ]
+       },
+       {
+        "name" : "range",
+        "type" : "R",
+        "storageClass" : [
+         "ref"
+        ]
+       }
+      ],
+      "endline" : 127,
+      "endchar" : 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name" : "numerics.fixed",
+  "kind" : "module",
+  "file" : "numerics\\fixed.d",
+  "comment" : "\n Copyright: Copyright Răzvan Ștefănescu 2016\n\n License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).\n\n Authors: $(LINK2 rumbu.ro, Răzvan Ștefănescu)\n\n Source: $(GITHUBREF fixed/_package.d, package.d)\n\n Macros:\n   LOCALREF   = <a href=\"#$0\">$0</a>\n   LOCALMREF  = <a href=\"#$1.$2\">$2</a>\n   LOCALMREF2 = <a href=\"#$1.$2\">$3</a>\n   PHOBOSREF  = <a href=\"https://dlang.org/phobos/std_$1.html#$2\">$2</a>\n   GITHUBREF  = <a href=\"https://github.com/rumbu13/$1\">$+</a>\n\n   DDOC = <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n           <html>\n           <head>\n            <meta charset=\"utf-8\">\n           <title>$(TITLE)</title>\n           <link rel=\"stylesheet\" href=\"https://dlang.org/css/codemirror.css\">\n           <link rel=\"stylesheet\" href=\"https://dlang.org/css/style.css\">\n           <link rel=\"stylesheet\" href=\"https://dlang.org/css/print.css\" media=\"print\">\n           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0\">\n           </head>\n           <body>\n           <h1>$(TITLE)</h1>\n           $(BODY)\n           </body></html>\n",
+  "members" : [
+   {
+    "name" : "std.traits",
+    "kind" : "import",
+    "line" : 38,
+    "char" : 15,
+    "selective" : [
+     "isIntegral",
+     "isSomeChar",
+     "isSomeString",
+     "isFloatingPoint",
+     "Unqual",
+     "isSigned",
+     "isUnsigned",
+     "Unsigned",
+     "Signed",
+     "isArray"
+    ]
+   },
+   {
+    "name" : "std.format",
+    "kind" : "import",
+    "line" : 39,
+    "char" : 15,
+    "selective" : [
+     "FormatSpec",
+     "FormatException",
+     "format"
+    ]
+   },
+   {
+    "name" : "std.conv",
+    "kind" : "import",
+    "line" : 40,
+    "char" : 15,
+    "selective" : [
+     "ConvException",
+     "ConvOverflowException"
+    ]
+   },
+   {
+    "name" : "std.ascii",
+    "kind" : "import",
+    "line" : 41,
+    "char" : 15,
+    "selective" : [
+     "LetterCase"
+    ]
+   },
+   {
+    "name" : "std.range",
+    "kind" : "import",
+    "line" : 42,
+    "char" : 15,
+    "selective" : [
+     "isInputRange",
+     "ElementType"
+    ]
+   },
+   {
+    "name" : "core.stdc.string",
+    "kind" : "import",
+    "line" : 43,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "memcpy"
+    ]
+   },
+   {
+    "name" : "numerics.internal.chars",
+    "kind" : "import",
+    "line" : 45,
+    "char" : 16,
+    "protection" : "private"
+   },
+   {
+    "name" : "numerics.internal.strings",
+    "kind" : "import",
+    "line" : 46,
+    "char" : 16,
+    "protection" : "private"
+   },
+   {
+    "name" : "numerics.internal.integrals",
+    "kind" : "import",
+    "line" : 47,
+    "char" : 16,
+    "protection" : "private"
+   },
+   {
+    "name" : "numerics.internal.arrays",
+    "kind" : "import",
+    "line" : 48,
+    "char" : 16,
+    "protection" : "private"
+   },
+   {
+    "name" : "numerics.internal.floats",
+    "kind" : "import",
+    "line" : 49,
+    "char" : 16,
+    "protection" : "private"
+   },
+   {
+    "name" : "std.math",
+    "kind" : "import",
+    "line" : 50,
+    "char" : 16,
+    "protection" : "private",
+    "selective" : [
+     "log",
+     "floor"
+    ]
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 52,
+    "char" : 9
+   },
+   {
+    "name" : "clz",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 53,
+    "char" : 9
+   },
+   {
+    "name" : "ctz",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 54,
+    "char" : 9
+   },
+   {
+    "name" : "ispow2",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 56,
+    "char" : 9
+   },
+   {
+    "name" : "clz",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 57,
+    "char" : 9
+   },
+   {
+    "name" : "ctz",
+    "kind" : "alias",
+    "protection" : "private",
+    "line" : 58,
+    "char" : 9
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n\n The FixedInt type is a type that represents a fixed size integer.\n FixedInt type implements all the arithmentic operations specific to\n other integral types\n Params:\n  bits   =   type size, all positive multiples of 32 are accepted, except 32\n             and 64 because these are equivalent to builtin types\n             $(D_KEYWORD int) and $(D_KEYWORD long) and respectively\n             $(D_KEYWORD uint) and $(D_KEYWORD ulong)\n  signed =   indicates if the type supports negative values, defaults to\n             true; negative values are encoded using two's complement\n Usage:\n ---\n   alias uint128 = FixedInt!(128, false);\n   alias int96 = FixedInt!(96, true);\n   alias int128 = FixedInt!128;\n   alias uint1024 = FixedInt!(1024, false);\n\n   uint128 a = 10;\n   int96 b = int96(\"12345678901234567890123456789\");\n ---\n Members:\n   $(LOCALMREF _FixedInt,digits)\n   $(LOCALMREF _FixedInt,max)\n   $(LOCALMREF _FixedInt,min)\n   $(LOCALMREF _FixedInt,this)\n   $(LOCALMREF _FixedInt,to)\n   $(LOCALMREF _FixedInt,toBytes)\n   $(LOCALMREF _FixedInt,toChars)\n   $(LOCALMREF _FixedInt,toHash)\n   $(LOCALMREF _FixedInt,toRange)\n   $(LOCALMREF _FixedInt,toString)\n Initialization:\n   from $(LOCALMREF2 _FixedInt,this,integral, character or boolean),\n        $(LOCALMREF2 _FixedInt,this.2,_FixedInt),\n        $(LOCALMREF2 _FixedInt,this.4,floating point),\n        $(LOCALMREF2 _FixedInt,this.3,string or character range)\n        $(LOCALMREF2 _FixedInt,this.5,bytes or byte range)\n Functions:\n   $(LOCALREF isPowerOf2)\n   $(LOCALREF nextPow2)\n   $(LOCALREF truncPow2)\n Traits:\n   $(LOCALREF isFixedInt)\n   $(LOCALREF isSignedFixedInt)\n   $(LOCALREF isUnsignedFixedInt)\n\n Operators:\n\n   $(TABLE\n       $(TR $(TH Operation) $(TH Expression) $(TH Left (A a)) $(TH Right (B b)) $(TH Result))\n       $(TR $(TD Assignment)\n            $(TD a = b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Positive)\n            $(TD +a) $(TD FixedInt) $(TD -)\n            $(TD FixedInt))\n       $(TR $(TD Negation (2-complement))\n            $(TD -a) $(TD FixedInt) $(TD -)\n            $(TD FixedInt))\n       $(TR $(TD Negation (logical))\n            $(TD ~a) $(TD FixedInt) $(TD -)\n            $(TD FixedInt))\n       $(TR $(TD Increment)\n            $(TD ++a) $(TD FixedInt) $(TD -)\n            $(TD FixedInt))\n       $(TR $(TD Decrement)\n            $(TD --a) $(TD FixedInt) $(TD -)\n            $(TD FixedInt))\n       $(TR $(TD Equality)\n            $(TD a == b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD bool))\n       $(TR $(TD Order)\n            $(TD a <> b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD bool))\n       $(TR $(TD Casting)\n            $(TD cast(B)a)\n            $(TD FixedInt)\n            $(TD integrals, floats, chars, bool or FixedInt)\n            $(TD B))\n       $(TR $(TD Logical and)\n            $(TD a & b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Logical or)\n            $(TD a | b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Logical xor)\n            $(TD a ^ b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Addition)\n            $(TD a + b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Substraction)\n            $(TD a - b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Multiplication)\n            $(TD a * b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Division)\n            $(TD a / b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Modulo)\n            $(TD a % b) $(TD FixedInt)\n            $(TD integrals, chars, bool or FixedInt)\n            $(TD FixedInt))\n       $(TR $(TD Shift left)\n            $(TD a << b) $(TD FixedInt)\n            $(TD integrals, chars or bool)\n            $(TD FixedInt))\n       $(TR $(TD Shift right)\n            $(TD a >>> b) $(TD FixedInt)\n            $(TD integrals, chars or bool)\n            $(TD FixedInt))\n       $(TR $(TD Arithmetic shift right)\n            $(TD a >> b) $(TD FixedInt)\n            $(TD integrals, chars or bool)\n            $(TD FixedInt))\n       $(TR $(TD Shift left)\n            $(TD a << b) $(TD integrals, chars or bool) $(TD FixedInt)\n            $(TD A))\n       $(TR $(TD Shift right)\n            $(TD a >>> b) $(TD integrals, chars or bool) $(TD FixedInt)\n            $(TD A))\n       $(TR $(TD Arithmetic shift right)\n            $(TD a >> b) $(TD integrals, chars or bool) $(TD FixedInt)\n            $(TD A))\n       $(TR $(TD Power)\n            $(TD a ^^ b) $(TD FixedInt)\n            $(TD integrals, chars or bool)\n            $(TD FixedInt))\n       $(TR $(TD Power)\n            $(TD a ^^ b) $(TD integrals, chars or bool) $(TD FixedInt)\n            $(TD A))\n   )\n\n Notes:\n   All operators are $(D_KEYWORD @safe pure nothrow @nogc);<br/>\n   D standard integer promotion rules are implemented;<br/>\n   Comparison and equality operators take into account the sign, therefore uint96.max will not be equal to -1 and comparing signed and unsigned operands is defined behaviour.<br/>\n",
+    "line" : 222,
+    "char" : 1,
+    "name" : "FixedInt",
+    "parameters" : [
+     {
+      "name" : "bits",
+      "kind" : "value",
+      "deco" : "k"
+     },
+     {
+      "name" : "signed",
+      "kind" : "value",
+      "deco" : "b",
+      "defaultValue" : "true"
+     }
+    ],
+    "constraint" : "bits >= 96 && bits % 32 == 0",
+    "members" : [
+     {
+      "name" : "FixedInt",
+      "kind" : "struct",
+      "line" : 222,
+      "char" : 1,
+      "members" : [
+       {
+        "name" : "data",
+        "kind" : "variable",
+        "line" : 226,
+        "char" : 21,
+        "type" : "uint[bits / 32]"
+       },
+       {
+        "name" : "ZERO_BITS",
+        "kind" : "variable",
+        "line" : 228,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "0u"
+       },
+       {
+        "name" : "ONE_BITS",
+        "kind" : "variable",
+        "line" : 229,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "4294967295u"
+       },
+       {
+        "name" : "SIGN_BITS",
+        "kind" : "variable",
+        "line" : 230,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "2147483648u"
+       },
+       {
+        "name" : "_bits",
+        "kind" : "variable",
+        "line" : 232,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "bits"
+       },
+       {
+        "name" : "_signed",
+        "kind" : "variable",
+        "line" : 233,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "signed"
+       },
+       {
+        "name" : "getMin",
+        "kind" : "function",
+        "line" : 236,
+        "char" : 17,
+        "storageClass" : [
+         "auto",
+         "static"
+        ],
+        "type" : "pure nothrow @nogc @safe ()",
+        "endline" : 247,
+        "endchar" : 5
+       },
+       {
+        "name" : "getMax",
+        "kind" : "function",
+        "line" : 250,
+        "char" : 17,
+        "storageClass" : [
+         "auto",
+         "static"
+        ],
+        "type" : "pure nothrow @nogc @safe ()",
+        "endline" : 261,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "line" : 266,
+        "char" : 12,
+        "name" : "toBuffer",
+        "parameters" : [
+         {
+          "name" : "C",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeChar!C",
+        "members" : [
+         {
+          "name" : "toBuffer",
+          "kind" : "function",
+          "line" : 266,
+          "char" : 12,
+          "type" : "const pure nothrow @nogc @safe size_t(C[] buffer, const uint radix, const bool uppercase = true)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "C[]"
+           },
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ]
+           },
+           {
+            "name" : "uppercase",
+            "deco" : "b",
+            "storageClass" : [
+             "const"
+            ],
+            "default" : "true"
+           }
+          ],
+          "endline" : 304,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 307,
+        "char" : 12,
+        "name" : "toBuffer16",
+        "parameters" : [
+         {
+          "name" : "C",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeChar!C",
+        "members" : [
+         {
+          "name" : "toBuffer16",
+          "kind" : "function",
+          "line" : 307,
+          "char" : 12,
+          "type" : "const pure nothrow @nogc @safe size_t(C[] buffer, const bool uppercase = true)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "C[]"
+           },
+           {
+            "name" : "uppercase",
+            "deco" : "b",
+            "storageClass" : [
+             "const"
+            ],
+            "default" : "true"
+           }
+          ],
+          "endline" : 341,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 344,
+        "char" : 12,
+        "name" : "toBuffer10",
+        "parameters" : [
+         {
+          "name" : "C",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeChar!C",
+        "members" : [
+         {
+          "name" : "toBuffer10",
+          "kind" : "function",
+          "line" : 344,
+          "char" : 12,
+          "type" : "const pure nothrow @nogc @safe size_t(C[] buffer, const bool uppercase = true)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "C[]"
+           },
+           {
+            "name" : "uppercase",
+            "deco" : "b",
+            "storageClass" : [
+             "const"
+            ],
+            "default" : "true"
+           }
+          ],
+          "endline" : 383,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 387,
+        "char" : 10,
+        "name" : "fromString",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "fromString",
+          "kind" : "function",
+          "line" : 387,
+          "char" : 10,
+          "type" : "pure nothrow @nogc @safe bool(auto ref const S buffer, const uint radix, out bool overflow)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "S",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           },
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ]
+           },
+           {
+            "name" : "overflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           }
+          ],
+          "endline" : 447,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 450,
+        "char" : 10,
+        "name" : "fromString10",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "fromString10",
+          "kind" : "function",
+          "line" : 450,
+          "char" : 10,
+          "type" : "pure nothrow @nogc @safe bool(auto ref const S buffer, out bool overflow)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "S",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           },
+           {
+            "name" : "overflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           }
+          ],
+          "endline" : 518,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 521,
+        "char" : 10,
+        "name" : "fromString16",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "fromString16",
+          "kind" : "function",
+          "line" : 521,
+          "char" : 10,
+          "type" : "pure nothrow @nogc @safe bool(auto ref const S buffer, out bool overflow)",
+          "parameters" : [
+           {
+            "name" : "buffer",
+            "type" : "S",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           },
+           {
+            "name" : "overflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           }
+          ],
+          "endline" : 565,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 567,
+        "char" : 10,
+        "name" : "fromRange",
+        "parameters" : [
+         {
+          "name" : "R",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isInputRange!R && isSomeChar!(ElementType!R)",
+        "members" : [
+         {
+          "name" : "fromRange",
+          "kind" : "function",
+          "line" : 567,
+          "char" : 10,
+          "type" : "bool(ref R range, const uint radix, out bool overflow)",
+          "parameters" : [
+           {
+            "name" : "range",
+            "type" : "R",
+            "storageClass" : [
+             "ref"
+            ]
+           },
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ]
+           },
+           {
+            "name" : "overflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           }
+          ],
+          "endline" : 629,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 632,
+        "char" : 7,
+        "name" : "toFloat",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFloatingPoint!T",
+        "members" : [
+         {
+          "name" : "toFloat",
+          "kind" : "function",
+          "line" : 632,
+          "char" : 7,
+          "type" : "const pure nothrow @nogc @safe T()",
+          "endline" : 685,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 688,
+        "char" : 10,
+        "name" : "fromFloat",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFloatingPoint!T",
+        "members" : [
+         {
+          "name" : "fromFloat",
+          "kind" : "function",
+          "line" : 688,
+          "char" : 10,
+          "type" : "pure @safe bool(T x, out bool underflow, out bool overflow, out bool inexact)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T"
+           },
+           {
+            "name" : "underflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           },
+           {
+            "name" : "overflow",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           },
+           {
+            "name" : "inexact",
+            "deco" : "b",
+            "storageClass" : [
+             "out"
+            ]
+           }
+          ],
+          "endline" : 831,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "round",
+        "kind" : "function",
+        "line" : 833,
+        "char" : 29,
+        "type" : "const FixedInt!(bits, signed)(const uint d)",
+        "parameters" : [
+         {
+          "name" : "d",
+          "deco" : "k",
+          "storageClass" : [
+           "const"
+          ]
+         }
+        ],
+        "endline" : 860,
+        "endchar" : 5
+       },
+       {
+        "name" : "min",
+        "kind" : "variable",
+        "comment" : "minimum and maximum representable values\n",
+        "line" : 865,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "getMin()"
+       },
+       {
+        "name" : "max",
+        "kind" : "variable",
+        "comment" : "ditto\n",
+        "line" : 867,
+        "char" : 10,
+        "storageClass" : [
+         "enum"
+        ],
+        "init" : "getMax()"
+       },
+       {
+        "kind" : "template",
+        "comment" : " Constructs a fixed size integer from a built in integral, character or\n boolean type.\n Params:\n  x = any integral, character, or boolean value.\n",
+        "line" : 876,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 876,
+          "char" : 5,
+          "type" : "pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 891,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL894_1",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 894,
+        "char" : 5,
+        "endline" : 910,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : " Constructs a fixed size integer from another one.\n Params:\n  x = any fixed size integer\n Throws:\n  $(PHOBOSREF conv,ConvOverflowException) if the specified value does not\n  fit in the current one.\n",
+        "line" : 911,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 911,
+          "char" : 5,
+          "type" : "pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 920,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "comment" : "ditto\n",
+        "line" : 923,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof > this.sizeof",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 923,
+          "char" : 5,
+          "type" : "(auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 934,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL937_2",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 937,
+        "char" : 5,
+        "endline" : 973,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : "\n Constructs a fixed size integer from a string value or a range of input\n characters\n Params:\n  s = a string that contains decimal, hexadecimal, octal or binary digits\n      or any other digit if a radix is provided;\n  range = a character input range that contains decimal, hexadecimal, octal\n      or binary digits or any other digit if a radix is provided;\n  radix = a value between 2 and 36 representing the number base.\n Throws:\n  $(PHOBOSREF conv,ConvOverflowException) if the _value does not fit in\n  the current FixedInt type;<br/>\n  $(PHOBOSREF conv, ConvException) if the specified string is empty or\n  contains invalid characters;<br/>\n  $(PHOBOSREF conv, ConvException) if the specified radix is outside the\n  interval [2; 36].\n Notes:\n   Strings starting with $(B 0x) or $(B 0X) will be interpreted as\n   hexadecimal;<br/>\n   Strings starting with $(B 0b) or $(B 0B) will be interpreted as\n   binary;<br/>\n   Strings starting with $(B 0o) or $(B 0O) will be interpreted as\n   octal;<br/>\n   String prefixes are accepted only if a radix is not provided;<br/>\n   Strings without any prefix will be interpreted as decimal if a radix\n   is not provided;<br/>\n   $(B +/-) sign is accepted only for decimal input strings and if a\n   radix is not provided;<br/>\n   Underscore characters are ignored.\n",
+        "line" : 974,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 974,
+          "char" : 5,
+          "type" : "@safe (auto ref const S s)",
+          "parameters" : [
+           {
+            "name" : "s",
+            "type" : "S",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1015,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "comment" : "ditto\n",
+        "line" : 1019,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1019,
+          "char" : 5,
+          "type" : "@safe (auto ref const S s, const uint radix)",
+          "parameters" : [
+           {
+            "name" : "s",
+            "type" : "S",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           },
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ]
+           }
+          ],
+          "endline" : 1035,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "comment" : "ditto\n",
+        "line" : 1038,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "R",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isInputRange!R && isSomeChar!(ElementType!R) && !isSomeString!R",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1038,
+          "char" : 5,
+          "type" : "(ref R range)",
+          "parameters" : [
+           {
+            "name" : "range",
+            "type" : "R",
+            "storageClass" : [
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1088,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "comment" : "ditto\n",
+        "line" : 1091,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "R",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isInputRange!R && isSomeChar!(ElementType!R) && !isSomeString!R",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1091,
+          "char" : 5,
+          "type" : "(ref R range, const uint radix)",
+          "parameters" : [
+           {
+            "name" : "range",
+            "type" : "R",
+            "storageClass" : [
+             "ref"
+            ]
+           },
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ]
+           }
+          ],
+          "endline" : 1107,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL1110_3",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 1110,
+        "char" : 5,
+        "endline" : 1141,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : " Constructs a fixed size integer from a floating point value\n Params:\n  x = any floating point value.\n Throws:\n  $(PHOBOSREF conv,ConvException) if the floating point value is NaN or\n  cannot be represented exactly as a FixedInt ;<br/>\n  $(PHOBOSREF conv,ConvOverflowException) if the floating point value is\n  not finite, it does not fit in the current fixed size integer,\n  or is underflowing towards 0.\n Notes:\n  Only 80-bit $(D_KEYWORD real) type is supported. Other real types are\n  converted to $(D_KEYWORD double) before the construction;<br/>\n",
+        "line" : 1142,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "F",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFloatingPoint!F",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1142,
+          "char" : 5,
+          "type" : "@safe (auto ref const F x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "F",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1158,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL1163_4",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 1163,
+        "char" : 5,
+        "endline" : 1183,
+        "endchar" : 2
+       },
+       {
+        "kind" : "template",
+        "comment" : " Constructs a fixed size integer using an _array or _range of any type\n Params:\n  array = an _array of data\n  range = a data _range\n Throws:\n  $(PHOBOSREF conv,ConvOverflowException) if the specified _array or _range\n  does not fit in the current fixed size integer\n Notes:\n  The most significant bit of the _array or _range data will set the sign.<br/>\n  Character ranges or strings are interpreted as decimal numbers, not as raw data.\n  Using a character _range or string will call one of the $(LOCALMREF2 _FixedInt,this.3,string constructors)\n",
+        "line" : 1184,
+        "char" : 2,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "A",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isArray!A && !isSomeString!A",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1184,
+          "char" : 2,
+          "type" : "pure @trusted (auto ref const A array)",
+          "parameters" : [
+           {
+            "name" : "array",
+            "type" : "A",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1194,
+          "endchar" : 2
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "comment" : "ditto\n",
+        "line" : 1198,
+        "char" : 5,
+        "name" : "this",
+        "parameters" : [
+         {
+          "name" : "R",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isInputRange!R && !isArray!R && !isSomeChar!(ElementType!R)",
+        "members" : [
+         {
+          "name" : "this",
+          "kind" : "constructor",
+          "line" : 1198,
+          "char" : 5,
+          "type" : "pure @trusted (ref R range)",
+          "parameters" : [
+           {
+            "name" : "range",
+            "type" : "R",
+            "storageClass" : [
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1219,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL1222_5",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 1222,
+        "char" : 5,
+        "endline" : 1229,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "line" : 1230,
+        "char" : 14,
+        "name" : "opAssign",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opAssign",
+          "kind" : "function",
+          "line" : 1230,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1237,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1240,
+        "char" : 14,
+        "name" : "opAssign",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opAssign",
+          "kind" : "function",
+          "line" : 1240,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1247,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1250,
+        "char" : 10,
+        "name" : "opEquals",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opEquals",
+          "kind" : "function",
+          "line" : 1250,
+          "char" : 10,
+          "type" : "const pure nothrow @nogc @safe bool(auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1266,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1269,
+        "char" : 10,
+        "name" : "opEquals",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T",
+        "members" : [
+         {
+          "name" : "opEquals",
+          "kind" : "function",
+          "line" : 1269,
+          "char" : 10,
+          "type" : "const pure nothrow @nogc @safe bool(auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1285,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1288,
+        "char" : 9,
+        "name" : "opCmp",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opCmp",
+          "kind" : "function",
+          "line" : 1288,
+          "char" : 9,
+          "type" : "const pure nothrow @nogc @safe int(auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1304,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1307,
+        "char" : 9,
+        "name" : "opCmp",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T",
+        "members" : [
+         {
+          "name" : "opCmp",
+          "kind" : "function",
+          "line" : 1307,
+          "char" : 9,
+          "type" : "const pure nothrow @nogc @safe int(auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1323,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1326,
+        "char" : 7,
+        "name" : "opCast",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opCast",
+          "kind" : "function",
+          "line" : 1326,
+          "char" : 7,
+          "type" : "const pure nothrow @nogc @safe T()",
+          "endline" : 1334,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1337,
+        "char" : 7,
+        "name" : "opCast",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T",
+        "members" : [
+         {
+          "name" : "opCast",
+          "kind" : "function",
+          "line" : 1337,
+          "char" : 7,
+          "type" : "const pure nothrow @nogc @safe T()",
+          "endline" : 1349,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1352,
+        "char" : 7,
+        "name" : "opCast",
+        "parameters" : [
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFloatingPoint!T",
+        "members" : [
+         {
+          "name" : "opCast",
+          "kind" : "function",
+          "line" : 1352,
+          "char" : 7,
+          "type" : "const pure nothrow @nogc @safe T()",
+          "endline" : 1355,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1358,
+        "char" : 10,
+        "name" : "opUnary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"+\""
+         }
+        ],
+        "members" : [
+         {
+          "name" : "opUnary",
+          "kind" : "function",
+          "line" : 1358,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe ()",
+          "endline" : 1361,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1364,
+        "char" : 10,
+        "name" : "opUnary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"-\""
+         }
+        ],
+        "members" : [
+         {
+          "name" : "opUnary",
+          "kind" : "function",
+          "line" : 1364,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe ()",
+          "endline" : 1369,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1372,
+        "char" : 10,
+        "name" : "opUnary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"~\""
+         }
+        ],
+        "members" : [
+         {
+          "name" : "opUnary",
+          "kind" : "function",
+          "line" : 1372,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe ()",
+          "endline" : 1377,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1380,
+        "char" : 14,
+        "name" : "opUnary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"++\""
+         }
+        ],
+        "members" : [
+         {
+          "name" : "opUnary",
+          "kind" : "function",
+          "line" : 1380,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe ()",
+          "endline" : 1384,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1387,
+        "char" : 14,
+        "name" : "opUnary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"--\""
+         }
+        ],
+        "members" : [
+         {
+          "name" : "opUnary",
+          "kind" : "function",
+          "line" : 1387,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe ()",
+          "endline" : 1391,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1394,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"|\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1394,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1401,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1404,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"&\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1404,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1411,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1414,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"^\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1414,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1421,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1424,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"|\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1424,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1431,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1434,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"&\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1434,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1441,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1444,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"^\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1444,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1451,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1454,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"<<\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1454,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1460,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1463,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\">>>\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1463,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1469,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1472,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\">>\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1472,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1483,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1486,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"+\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1486,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1501,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1504,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"+\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1504,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1520,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1523,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"-\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1523,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1538,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1541,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"-\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1541,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1557,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1560,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"*\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1560,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1584,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1587,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"*\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1587,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1606,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1609,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"/\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1609,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1633,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1636,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"/\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1636,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1654,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1657,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"%\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1657,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1681,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1684,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"%\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && T.sizeof <= this.sizeof",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1684,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1702,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1705,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"^^\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1705,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1740,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1743,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"^^\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1743,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1778,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1781,
+        "char" : 14,
+        "name" : "opOpAssign",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && (op == \">>\" || op == \">>>\" || op == \"<<\")",
+        "members" : [
+         {
+          "name" : "opOpAssign",
+          "kind" : "function",
+          "line" : 1781,
+          "char" : 14,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc ref @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1784,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1787,
+        "char" : 10,
+        "name" : "opBinary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "(isIntegral!T || isSomeChar!T || is(Unqual!T == bool)) && (op == \"|\" || op == \"&\" || op == \"^\" || op == \"+\" || op == \"-\" || op == \"*\" || op == \"/\" || op == \"%\" || op == \"^^\")",
+        "members" : [
+         {
+          "name" : "opBinary",
+          "kind" : "function",
+          "line" : 1787,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1797,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1800,
+        "char" : 10,
+        "name" : "opBinaryRight",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "(isIntegral!T || isSomeChar!T || is(Unqual!T == bool)) && (op == \"|\" || op == \"&\" || op == \"^\" || op == \"+\" || op == \"*\" || op == \"-\" || op == \"/\" || op == \"%\")",
+        "members" : [
+         {
+          "name" : "opBinaryRight",
+          "kind" : "function",
+          "line" : 1800,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1810,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1813,
+        "char" : 10,
+        "name" : "opBinary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isFixedInt!T && (op == \"|\" || op == \"&\" || op == \"^\" || op == \"+\" || op == \"-\" || op == \"*\" || op == \"/\" || op == \"%\")",
+        "members" : [
+         {
+          "name" : "opBinary",
+          "kind" : "function",
+          "line" : 1813,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1830,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1833,
+        "char" : 10,
+        "name" : "opBinary",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "(isIntegral!T || isSomeChar!T || is(Unqual!T == bool) || isFixedInt!T) && (op == \">>\" || op == \">>>\" || op == \"<<\")",
+        "members" : [
+         {
+          "name" : "opBinary",
+          "kind" : "function",
+          "line" : 1833,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1840,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1843,
+        "char" : 10,
+        "name" : "opBinaryRight",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string"
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "(isIntegral!T || isSomeChar!T || is(Unqual!T == bool)) && (op == \">>\" || op == \">>>\" || op == \"<<\")",
+        "members" : [
+         {
+          "name" : "opBinaryRight",
+          "kind" : "function",
+          "line" : 1843,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1850,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "kind" : "template",
+        "line" : 1853,
+        "char" : 10,
+        "name" : "opBinaryRight",
+        "parameters" : [
+         {
+          "name" : "op",
+          "kind" : "value",
+          "type" : "string",
+          "specValue" : "\"^^\""
+         },
+         {
+          "name" : "T",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isIntegral!T || isSomeChar!T || is(Unqual!T == bool)",
+        "members" : [
+         {
+          "name" : "opBinaryRight",
+          "kind" : "function",
+          "line" : 1853,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "const pure nothrow @nogc @safe (auto ref const T x)",
+          "parameters" : [
+           {
+            "name" : "x",
+            "type" : "T",
+            "storageClass" : [
+             "auto",
+             "const",
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 1888,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "toHash",
+        "kind" : "function",
+        "comment" : " Calculates a hash key for the current FixedInt value\n Returns: a unique hash value\n Notes:\n   This function is not intended to be used directly, but it's\n   used internally by associative arrays.\n",
+        "line" : 1898,
+        "char" : 12,
+        "type" : "const pure nothrow @nogc @safe size_t()",
+        "endline" : 1905,
+        "endchar" : 5
+       },
+       {
+        "name" : "__unittestL1908_6",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 1908,
+        "char" : 5,
+        "endline" : 1924,
+        "endchar" : 5
+       },
+       {
+        "name" : "toString",
+        "kind" : "function",
+        "comment" : " Converts the current FixedInt value to its default decimal\n string representation\n Returns:\n   A base-10 representation of the current FixedInt value\n",
+        "line" : 1925,
+        "char" : 12,
+        "type" : "const pure nothrow @safe string()",
+        "endline" : 1943,
+        "endchar" : 5
+       },
+       {
+        "name" : "__unittestL1946_7",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 1946,
+        "char" : 5,
+        "endline" : 1977,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : " Converts the current FixedInt value to its a string\n representation using the specified format\n Params:\n   sink = a delegate for accepting custom segments of the\n   formatted string.\n   f = a format string specifying the output format.\n Throws:\n   $(PHOBOSREF format,FormatException) if the format specifier\n   is not supported.\n Notes:\n   This function is not supposed to be used directly, but it's used\n   internally by the standard library $(PHOBOSREF format,format) or\n   $(PHOBOSREF stdio,writef). <br/>\n   Supported format specifiers:<ul>\n   <li>$(B %d) - signed decimal</li>\n   <li>$(B %i) - signed decimal</li>\n   <li>$(B %u) - unsigned decimal</li>\n   <li>$(B %x) - unsigned hexadecimal (lowercase)</li>\n   <li>$(B %X) - unsigned hexadecimal (uppercase)</li>\n   <li>$(B %o) - unsigned octal</li>\n   <li>$(B %b) - unsigned binary</li>\n   <li>$(B %s) - default string representation</li>\n   </ul>\n",
+        "line" : 1977,
+        "char" : 10,
+        "name" : "toString",
+        "parameters" : [
+         {
+          "name" : "C",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeChar!C",
+        "members" : [
+         {
+          "name" : "toString",
+          "kind" : "function",
+          "line" : 1977,
+          "char" : 10,
+          "type" : "const void(scope void delegate(const(C)[]) sink, ref FormatSpec!char f)",
+          "parameters" : [
+           {
+            "name" : "sink",
+            "type" : "void delegate(const(C)[])",
+            "storageClass" : [
+             "scope"
+            ]
+           },
+           {
+            "name" : "f",
+            "type" : "FormatSpec!char",
+            "storageClass" : [
+             "ref"
+            ]
+           }
+          ],
+          "endline" : 2043,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL2046_8",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 2046,
+        "char" : 5,
+        "endline" : 2063,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : " Converts the current FixedInt value to its custom base representation\n Params:\n   radix = a base used to convert;\n   lettercase = casing used if radix is greater than 10.\n Throws:\n  $(PHOBOSREF conv, ConvException) if the specified radix is outside the\n  interval [2; 36].\n",
+        "line" : 2064,
+        "char" : 7,
+        "name" : "to",
+        "parameters" : [
+         {
+          "name" : "S",
+          "kind" : "type"
+         }
+        ],
+        "constraint" : "isSomeString!S",
+        "members" : [
+         {
+          "name" : "to",
+          "kind" : "function",
+          "line" : 2064,
+          "char" : 7,
+          "type" : "const @safe S(const uint radix = 10, const LetterCase lettercase = LetterCase.upper)",
+          "parameters" : [
+           {
+            "name" : "radix",
+            "deco" : "k",
+            "storageClass" : [
+             "const"
+            ],
+            "default" : "10"
+           },
+           {
+            "name" : "lettercase",
+            "type" : "LetterCase",
+            "storageClass" : [
+             "const"
+            ],
+            "default" : "LetterCase.upper"
+           }
+          ],
+          "endline" : 2087,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "__unittestL2090_9",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 2090,
+        "char" : 5,
+        "endline" : 2109,
+        "endchar" : 5
+       },
+       {
+        "kind" : "template",
+        "comment" : "\n Converts the current fixed size integer _to its equivalent character range representation\n using the specified radix\n Params:\n   radix = a _radix between 2 and 36 used _to convert the input _value.\n   letterCase = choose between character case for radixes greater than 10.\n Returns:\n   A range of characters representing of the current fixed size integer.\n Notes:\n   Negative values are prefixed with minus sign(-) only if radix is 10.\n",
+        "line" : 2110,
+        "char" : 10,
+        "name" : "toChars",
+        "parameters" : [
+         {
+          "name" : "radix",
+          "kind" : "value",
+          "deco" : "k",
+          "defaultValue" : "10"
+         },
+         {
+          "name" : "C",
+          "kind" : "type",
+          "defaultDeco" : "a"
+         },
+         {
+          "name" : "letterCase",
+          "kind" : "value",
+          "type" : "LetterCase",
+          "defaultValue" : "LetterCase.upper"
+         }
+        ],
+        "constraint" : "isSomeChar!C",
+        "members" : [
+         {
+          "name" : "toChars",
+          "kind" : "function",
+          "line" : 2110,
+          "char" : 10,
+          "storageClass" : [
+           "auto"
+          ],
+          "type" : "pure nothrow @nogc @safe ()",
+          "endline" : 2149,
+          "endchar" : 5
+         }
+        ]
+       },
+       {
+        "name" : "toBytes",
+        "kind" : "function",
+        "comment" : "\n Converts the current fixed size integer _to an array or range of byte data\n Returns:\n   A byte array or a range of bytes as the internal representation of the\n   current fixed size integer.\n",
+        "line" : 2159,
+        "char" : 13,
+        "type" : "const pure nothrow @safe ubyte[]()",
+        "endline" : 2162,
+        "endchar" : 5
+       },
+       {
+        "name" : "toRange",
+        "kind" : "function",
+        "comment" : "ditto\n",
+        "line" : 2166,
+        "char" : 10,
+        "storageClass" : [
+         "auto"
+        ],
+        "type" : "const pure nothrow @nogc @safe ()",
+        "endline" : 2180,
+        "endchar" : 5
+       },
+       {
+        "name" : "__unittestL2183_10",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 2183,
+        "char" : 5,
+        "endline" : 2194,
+        "endchar" : 5
+       },
+       {
+        "name" : "digits",
+        "kind" : "function",
+        "comment" : " Calculates the number of decimal _digits\n Returns:\n   Number of decimal _digits for the current value or 0 for a zero value.\n",
+        "line" : 2195,
+        "char" : 20,
+        "type" : "const pure nothrow @nogc @property @safe uint()",
+        "endline" : 2208,
+        "endchar" : 5
+       },
+       {
+        "name" : "__unittestL2212_11",
+        "kind" : "function",
+        "comment" : "\n",
+        "line" : 2212,
+        "char" : 5,
+        "endline" : 2219,
+        "endchar" : 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : " Check whether a number is a power of two.\n Params:\n  x = a fixed size integer\n Returns:\n   true x that is a power of two, otherwise false. Zero values are not considered powers of 2.\n",
+    "line" : 2228,
+    "char" : 6,
+    "name" : "isPowerOf2",
+    "parameters" : [
+     {
+      "name" : "F",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isFixedInt!F",
+    "members" : [
+     {
+      "name" : "isPowerOf2",
+      "kind" : "function",
+      "line" : 2228,
+      "char" : 6,
+      "type" : "pure nothrow @nogc @safe bool(auto ref const F x)",
+      "parameters" : [
+       {
+        "name" : "x",
+        "type" : "F",
+        "storageClass" : [
+         "auto",
+         "const",
+         "ref"
+        ]
+       }
+      ],
+      "endline" : 2234,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : " Gives the next power of two.\n Params:\n  x = a fixed size integer\n Returns:\n   The next value after x that is a power of two, zero if x is 0.\n",
+    "line" : 2244,
+    "char" : 6,
+    "name" : "nextPow2",
+    "parameters" : [
+     {
+      "name" : "F",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isFixedInt!F",
+    "members" : [
+     {
+      "name" : "nextPow2",
+      "kind" : "function",
+      "line" : 2244,
+      "char" : 6,
+      "storageClass" : [
+       "auto"
+      ],
+      "type" : "pure nothrow @nogc @safe (auto ref const F x)",
+      "parameters" : [
+       {
+        "name" : "x",
+        "type" : "F",
+        "storageClass" : [
+         "auto",
+         "const",
+         "ref"
+        ]
+       }
+      ],
+      "endline" : 2267,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : " Gives the previous power of two.\n Params:\n  x = a fixed size integer\n Returns:\n   The previous value before x that is a power of two, x itself if it's already a power of two, zero if x is 0.\n",
+    "line" : 2277,
+    "char" : 6,
+    "name" : "truncPow2",
+    "parameters" : [
+     {
+      "name" : "F",
+      "kind" : "type"
+     }
+    ],
+    "constraint" : "isFixedInt!F",
+    "members" : [
+     {
+      "name" : "truncPow2",
+      "kind" : "function",
+      "line" : 2277,
+      "char" : 6,
+      "storageClass" : [
+       "auto"
+      ],
+      "type" : "pure nothrow @nogc @safe (auto ref const F x)",
+      "parameters" : [
+       {
+        "name" : "x",
+        "type" : "F",
+        "storageClass" : [
+         "auto",
+         "const",
+         "ref"
+        ]
+       }
+      ],
+      "endline" : 2293,
+      "endchar" : 1
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "protection" : "private",
+    "line" : 2297,
+    "char" : 1,
+    "name" : "isSomeUnsigned",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : []
+   },
+   {
+    "kind" : "template",
+    "protection" : "private",
+    "line" : 2309,
+    "char" : 1,
+    "name" : "isSomeSigned",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : []
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n Detects whether T is a fixed integral type.\n Built-in integral types are not considered\n",
+    "line" : 2325,
+    "char" : 1,
+    "name" : "isFixedInt",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "isFixedInt",
+      "kind" : "variable",
+      "line" : 2327,
+      "char" : 10,
+      "storageClass" : [
+       "enum"
+      ],
+      "init" : "is(T : FixedInt!(bits, signed), uint bits, bool signed)"
+     }
+    ]
+   },
+   {
+    "name" : "__unittestL2331_12",
+    "kind" : "function",
+    "comment" : "\n",
+    "line" : 2331,
+    "char" : 1,
+    "endline" : 2343,
+    "endchar" : 1
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n Detects whether T is an unsigned fixed integral type.\n Built-in integral types are not considered\n",
+    "line" : 2343,
+    "char" : 1,
+    "name" : "isUnsignedFixedInt",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "isUnsignedFixedInt",
+      "kind" : "variable",
+      "line" : 2345,
+      "char" : 10,
+      "storageClass" : [
+       "enum"
+      ],
+      "init" : "is(T : FixedInt!(bits, signed), uint bits, bool signed = false)"
+     }
+    ]
+   },
+   {
+    "name" : "__unittestL2349_13",
+    "kind" : "function",
+    "comment" : "\n",
+    "line" : 2349,
+    "char" : 1,
+    "endline" : 2361,
+    "endchar" : 1
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n Detects whether T is a signed fixed integral type.\n Built-in integral types are not considered\n",
+    "line" : 2361,
+    "char" : 1,
+    "name" : "isSignedFixedInt",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "isSignedFixedInt",
+      "kind" : "variable",
+      "line" : 2363,
+      "char" : 10,
+      "storageClass" : [
+       "enum"
+      ],
+      "init" : "is(T : FixedInt!(bits, signed), uint bits, bool signed = true)"
+     }
+    ]
+   },
+   {
+    "name" : "__unittestL2368_14",
+    "kind" : "function",
+    "comment" : "\n",
+    "line" : 2368,
+    "char" : 1,
+    "endline" : 2379,
+    "endchar" : 1
+   }
+  ]
+ }
+]

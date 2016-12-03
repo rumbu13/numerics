@@ -1,0 +1,4 @@
+ 
+"..\bin\bench.obj","..\bin\bench.exe","..\bin\bench.map",..\lib\numerics32.lib+ 
+user32.lib+ 
+kernel32.lib/NOMAP/NOI/DELEXE 

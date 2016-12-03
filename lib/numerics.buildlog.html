@@ -1,0 +1,35 @@
+<html><head><META HTTP-EQUIV="Content-Type" content="text/html">
+</head><body><pre>
+<table width=100% bgcolor=#CFCFE5><tr><td>
+	<font face=arial size=+3>Build Log</font>
+</table>
+<table width=100% bgcolor=#DFDFE5><tr><td><font face=arial size=+2>
+Building ..\lib\numerics32.lib
+</font></table>
+<table width=100% bgcolor=#EFEFE5><tr><td><font face=arial size=+1>
+Command Line
+</font></table>
+set PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\\Common7\IDE;C:\Program Files (x86)\Windows Kits\8.1\\bin;C:\D\dmd2\windows\bin;%PATH%
+
+echo numerics\internal\arrays.d &gt;..\lib\numerics.build.rsp
+echo numerics\internal\chars.d &gt;&gt;..\lib\numerics.build.rsp
+echo numerics\internal\floats.d &gt;&gt;..\lib\numerics.build.rsp
+echo numerics\internal\integrals.d &gt;&gt;..\lib\numerics.build.rsp
+echo numerics\internal\strings.d &gt;&gt;..\lib\numerics.build.rsp
+echo numerics\fixed.d &gt;&gt;..\lib\numerics.build.rsp
+
+&quot;C:\Program Files (x86)\VisualD\pipedmd.exe&quot; dmd -g -debug -w -wi -lib -de -D -Dd..\doc -X -Xf&quot;..\lib\numerics32.json&quot; -deps=&quot;..\lib\numerics.dep&quot; -of&quot;..\lib\numerics32.lib&quot; -map &quot;..\lib\numerics.map&quot; -L/NOMAP @..\lib\numerics.build.rsp
+if errorlevel 1 goto reportError
+if not exist &quot;..\lib\numerics32.lib&quot; (echo &quot;..\lib\numerics32.lib&quot; not created! &amp;&amp; goto reportError)
+
+goto noError
+
+:reportError
+echo Building ..\lib\numerics32.lib failed!
+
+:noError
+<table width=100% bgcolor=#EFEFE5><tr><td><font face=arial size=+1>
+Output
+</font></table>
+
+</body></html>

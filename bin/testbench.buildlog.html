@@ -1,0 +1,35 @@
+<html><head><META HTTP-EQUIV="Content-Type" content="text/html">
+</head><body><pre>
+<table width=100% bgcolor=#CFCFE5><tr><td>
+	<font face=arial size=+3>Build Log</font>
+</table>
+<table width=100% bgcolor=#DFDFE5><tr><td><font face=arial size=+2>
+Building ..\bin\testbench.exe
+</font></table>
+<table width=100% bgcolor=#EFEFE5><tr><td><font face=arial size=+1>
+Command Line
+</font></table>
+set PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\\Common7\IDE;C:\Program Files (x86)\Windows Kits\8.1\\bin;C:\D\dmd2\windows\bin;%PATH%
+dmd -g -debug -w -wi -de -X -Xf&quot;..\bin\testbench.json&quot; -deps=&quot;..\bin\testbench.dep&quot; -c -of&quot;..\bin\testbench.obj&quot; testbench\main.d
+if errorlevel 1 goto reportError
+
+set LIB=&quot;C:\D\dmd2\windows\bin\..\lib&quot;
+echo. &gt; D:\git\numerics\src\..\bin\testbench.build.lnkarg
+echo &quot;..\bin\testbench.obj&quot;,&quot;..\bin\testbench.exe&quot;,&quot;..\bin\testbench.map&quot;,user32.lib+ &gt;&gt; D:\git\numerics\src\..\bin\testbench.build.lnkarg
+echo kernel32.lib/NOMAP/CO/NOI/DELEXE &gt;&gt; D:\git\numerics\src\..\bin\testbench.build.lnkarg
+
+&quot;C:\Program Files (x86)\VisualD\pipedmd.exe&quot; -deps ..\bin\testbench.lnkdep C:\D\dmd2\windows\bin\link.exe @D:\git\numerics\src\..\bin\testbench.build.lnkarg
+if errorlevel 1 goto reportError
+if not exist &quot;..\bin\testbench.exe&quot; (echo &quot;..\bin\testbench.exe&quot; not created! &amp;&amp; goto reportError)
+
+goto noError
+
+:reportError
+echo Building ..\bin\testbench.exe failed!
+
+:noError
+<table width=100% bgcolor=#EFEFE5><tr><td><font face=arial size=+1>
+Output
+</font></table>
+
+</body></html>
