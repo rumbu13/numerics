@@ -9,14 +9,14 @@
 *
 * Authors: $(LINK2 rumbu.ro, Răzvan Ștefănescu)
 *
-* Source: $(GITHUBREF fixed/_package.d, package.d)
+* Source: $(GITHUBREF src/numerics/_fixed.d, fixed.d)
 *
 * Macros:
 *   LOCALREF   = <a href="#$0">$0</a>
 *   LOCALMREF  = <a href="#$1.$2">$2</a>
 *   LOCALMREF2 = <a href="#$1.$2">$3</a>
 *   PHOBOSREF  = <a href="https://dlang.org/phobos/std_$1.html#$2">$2</a>
-*   GITHUBREF  = <a href="https://github.com/rumbu13/$1">$+</a>
+*   GITHUBREF  = <a href="https://github.com/rumbu13/numerics/blob/master/$1">$+</a>
 *
 *   DDOC = <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 *           <html>
@@ -35,11 +35,11 @@
 */
 module numerics.fixed;
 
-public import std.traits: isIntegral, isSomeChar, isSomeString, isFloatingPoint, Unqual, isSigned, isUnsigned, Unsigned, Signed, isArray;
+public import std.traits: isIntegral, isSomeChar, isSomeString, isFloatingPoint, Unqual, isSigned, 
+	isUnsigned, Unsigned, Signed, isArray, isScalarType, isIterable, ForeachType;
 public import std.format: FormatSpec, FormatException, format;
 public import std.conv: ConvException, ConvOverflowException;
 public import std.ascii: LetterCase;
-public import std.range: isInputRange, ElementType;
 import core.stdc.string: memcpy;
 
 private import numerics.internal.chars;
@@ -47,7 +47,7 @@ private import numerics.internal.strings;
 private import numerics.internal.integrals;
 private import numerics.internal.arrays;
 private import numerics.internal.floats;
-private import std.math: log, floor;
+private import std.math: LOG2, ceil;
 
 private alias ispow2 = numerics.internal.integrals.ispow2;
 private alias clz    = numerics.internal.integrals.clz;
@@ -88,33 +88,39 @@ version(unittest)
 *   alias uint1024 = FixedInt!(1024, false);
 * 
 *   uint128 a = 10;
-*   int96 b = int96("12345678901234567890123456789");
+*   auto b = int96("12345678901234567890123456789");
 * ---
 * Members: 
-*   $(LOCALMREF _FixedInt,digits) 
-*   $(LOCALMREF _FixedInt,max) 
-*   $(LOCALMREF _FixedInt,min) 
-*   $(LOCALMREF _FixedInt,this)
-*   $(LOCALMREF _FixedInt,to)
-*   $(LOCALMREF _FixedInt,toBytes)
-*   $(LOCALMREF _FixedInt,toChars)
-*   $(LOCALMREF _FixedInt,toHash)
-*   $(LOCALMREF _FixedInt,toRange)
+*   $(LOCALMREF _FixedInt,max), 
+*   $(LOCALMREF _FixedInt,min), 
+*   $(LOCALMREF _FixedInt,this),
+*   $(LOCALMREF _FixedInt,to),
+*   $(LOCALMREF _FixedInt,toArray),
+*   $(LOCALMREF _FixedInt,toChars),
+*   $(LOCALMREF _FixedInt,toHash),
+*   $(LOCALMREF _FixedInt,toRange),
 *   $(LOCALMREF _FixedInt,toString)
 * Initialization:
 *   from $(LOCALMREF2 _FixedInt,this,integral, character or boolean), 
 *        $(LOCALMREF2 _FixedInt,this.2,_FixedInt),
 *        $(LOCALMREF2 _FixedInt,this.4,floating point),
-*        $(LOCALMREF2 _FixedInt,this.3,string or character range)
-*        $(LOCALMREF2 _FixedInt,this.5,bytes or byte range)
+*        $(LOCALMREF2 _FixedInt,this.3,string or character range),
+*        $(LOCALMREF2 _FixedInt,this.5,array or data range )
 * Functions:
-*   $(LOCALREF isPowerOf2) 
-*   $(LOCALREF nextPow2) 
-*   $(LOCALREF truncPow2)
+*   $(LOCALREF digits2), 
+*   $(LOCALREF digits10), 
+*   $(LOCALREF isPowerOf2), 
+*   $(LOCALREF isPowerOf10), 
+*   $(LOCALREF nextPow2), 
+*   $(LOCALREF nextPow10), 
+*   $(LOCALREF truncPow2),
+*   $(LOCALREF truncPow10)
 * Traits:
-*   $(LOCALREF isFixedInt) 
-*   $(LOCALREF isSignedFixedInt) 
-*   $(LOCALREF isUnsignedFixedInt)
+*   $(LOCALREF isFixedInt), 
+*   $(LOCALREF isSignedFixedInt), 
+*   $(LOCALREF isUnsignedFixedInt),
+*   $(LOCALREF SignedFixedInt),
+*   $(LOCALREF UnsignedFixedInt),
 *
 * Operators:
 *
@@ -122,7 +128,7 @@ version(unittest)
 *       $(TR $(TH Operation) $(TH Expression) $(TH Left (A a)) $(TH Right (B b)) $(TH Result))
 *       $(TR $(TD Assignment)
 *            $(TD a = b) $(TD FixedInt)
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Positive)
 *            $(TD +a) $(TD FixedInt) $(TD -)
@@ -141,76 +147,76 @@ version(unittest)
 *            $(TD FixedInt))
 *       $(TR $(TD Equality) 
 *            $(TD a == b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, floats, chars, bool, FixedInt)
 *            $(TD bool))
 *       $(TR $(TD Order) 
 *            $(TD a <> b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, floats, chars, bool, FixedInt)
 *            $(TD bool))
 *       $(TR $(TD Casting) 
 *            $(TD cast(B)a)
 *            $(TD FixedInt)     
-*            $(TD integrals, floats, chars, bool or FixedInt)      
+*            $(TD integrals, floats, chars, bool, FixedInt)      
 *            $(TD B))
 *       $(TR $(TD Logical and) 
 *            $(TD a & b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Logical or) 
 *            $(TD a | b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Logical xor) 
 *            $(TD a ^ b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Addition) 
 *            $(TD a + b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Substraction) 
 *            $(TD a - b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Multiplication) 
 *            $(TD a * b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Division) 
 *            $(TD a / b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Modulo) 
 *            $(TD a % b) $(TD FixedInt) 
-*            $(TD integrals, chars, bool or FixedInt)
+*            $(TD integrals, chars, bool, FixedInt)
 *            $(TD FixedInt))
 *       $(TR $(TD Shift left) 
 *            $(TD a << b) $(TD FixedInt) 
-*            $(TD integrals, chars or bool)
+*            $(TD integrals, chars, bool)
 *            $(TD FixedInt))
 *       $(TR $(TD Shift right) 
 *            $(TD a >>> b) $(TD FixedInt) 
-*            $(TD integrals, chars or bool)
+*            $(TD integrals, chars, bool)
 *            $(TD FixedInt))
 *       $(TR $(TD Arithmetic shift right) 
 *            $(TD a >> b) $(TD FixedInt) 
-*            $(TD integrals, chars or bool)
+*            $(TD integrals, chars, bool)
 *            $(TD FixedInt))
 *       $(TR $(TD Shift left) 
-*            $(TD a << b) $(TD integrals, chars or bool) $(TD FixedInt)       
+*            $(TD a << b) $(TD integrals, chars, bool) $(TD FixedInt)       
 *            $(TD A))
 *       $(TR $(TD Shift right) 
-*            $(TD a >>> b) $(TD integrals, chars or bool) $(TD FixedInt) 
+*            $(TD a >>> b) $(TD integrals, chars, bool) $(TD FixedInt) 
 *            $(TD A))
 *       $(TR $(TD Arithmetic shift right) 
-*            $(TD a >> b) $(TD integrals, chars or bool) $(TD FixedInt) 
+*            $(TD a >> b) $(TD integrals, chars, bool) $(TD FixedInt) 
 *            $(TD A))
 *       $(TR $(TD Power) 
 *            $(TD a ^^ b) $(TD FixedInt) 
-*            $(TD integrals, chars or bool)
+*            $(TD integrals, chars, bool)
 *            $(TD FixedInt))
 *       $(TR $(TD Power) 
-*            $(TD a ^^ b) $(TD integrals, chars or bool) $(TD FixedInt) 
+*            $(TD a ^^ b) $(TD integrals, chars, bool) $(TD FixedInt) 
 *            $(TD A))
 *   )
 *
@@ -341,7 +347,7 @@ private:
     }
 
     @safe pure nothrow @nogc
-    size_t toBuffer10(C)(C[] buffer, const bool uppercase = true) const if (isSomeChar!C)
+    size_t toBuffer10(C)(C[] buffer) const if (isSomeChar!C)
     {
         if (all(data, ZERO_BITS))
         {
@@ -381,7 +387,6 @@ private:
 
         return i + 1;
     }
-
 
     @safe pure nothrow @nogc
     bool fromString(S)(auto const ref S buffer, const uint radix, out bool overflow) if (isSomeString!S)
@@ -564,32 +569,26 @@ private:
         return anyDigit;
     }
 
-    bool fromRange(R)(R range, const uint radix, out bool overflow) if (isInputRange!R && isSomeChar!(ElementType!R))
-    {
-        assert(radix >= 2 && radix <= 36);
-        overflow = false;
-        size_t i = 0;
+	bool fromIterable(I)(I iterable, const uint radix, out bool overflow) if (isIterable!I && isSomeChar!(ForeachType!I))
+	{
+		bool anyDigit;
+		bool initializing = true;
+		overflow = false;
         bool anyDigit = false;
         bool p2 = ispow2(radix);
         auto w = ctz(radix);
         uint width = 0;
 
-        data[] = ZERO_BITS;
-    
-        while (!range.empty)
-        {
-			if (range.front != '0' && range.front != '_')
-				break;
-			anyDigit = range.front == '0';
-            range.popFront();
-        }
-
-        while (!range.empty)
-        {
-            auto c = range.front;
-            if (c != '_')
-            {
-                auto r = charToDigit(c, radix);
+		foreach(c; iterable)
+		{
+			if (c == '_' || (c == '0' && initializing))
+			{
+				if (!anyDigit && c == '0')
+					anyDigit = true;
+			}
+			else
+			{
+				auto r = charToDigit(c, radix);
                 if (r < 0)
                     return false;
                 anyDigit = true;
@@ -619,16 +618,111 @@ private:
                         return false;
                     }
                 }
-            }
-            else
-            {
-                //skip '_'
-            }
-            range.popFront();
-        }
+			}
+		}
 
-        return anyDigit;
-    }
+		return anyDigit;
+	}
+	
+	bool fromIterableWithHeader(I)(I iterable, out bool overflow, out bool negative, out uint radix) if (isIterable!I && isSomeChar!(ForeachType!I))
+	{
+		enum State
+		{
+			init,
+			expectingHeader,
+			leading,
+			parse,
+		}
+
+		bool hasSign;
+		bool anyDigit;
+		State state = State.init;
+		overflow = false;
+        bool anyDigit = false;
+		radix = 10;
+        bool p2 = false;
+        uint w = 0;
+        uint width = 0;
+
+		foreach(c; iterable)
+		{
+			if (c == '+' && state == State.init && !hasSign)
+			{
+				hasSign = true;
+			}
+			if (c == '+' && state == State.init && !hasSign)
+			{
+				hasSign = true;
+				negative = true;
+			}
+			else if (c == '_' || (c == '0' && state == State.leading))
+			{
+				if (!anyDigit && c == '0')
+					anyDigit = true;
+			}
+			else if (c == '0' && state == State.init)
+			{
+				state = State.expectingHeader;
+			}
+			else if ((c == 'x' || c == 'X') && state == State.expectingHeader)
+			{
+				radix = 16;
+				p2 = true;
+				w = 4;
+				state = State.leading;
+			}
+			else if ((c == 'o' || c == 'O') && state == State.expectingHeader)
+			{
+				radix = 8;
+				p2 = true;
+				w = 2;
+				state = State.leading;
+			}
+			else if ((c == 'b' || c == 'B') && state == State.expectingHeader)
+			{
+				radix = 2;
+				p2 = true;
+				w = 1;
+				state = State.leading;
+			}
+			else
+			{
+				state = State.parse;
+				auto r = charToDigit(c, radix);
+                if (r < 0)
+                    return false;
+                anyDigit = true;
+                if (p2)
+                {
+                    width += w;
+                    if (width > bits)
+                    {
+                        overflow = true;
+                        return false;
+                    }
+                    shl(data, w);
+                    data[0] |= r;
+                }
+                else
+                {
+                    auto carry = mul(data, radix);
+                    if (carry)
+                    {
+                        overflow = true;
+                        return false;
+                    }
+                    carry = add(data, r);
+                    if (carry)
+                    {
+                        overflow = true;
+                        return false;
+                    }
+                }
+			}
+		}
+
+		return anyDigit;
+	}
 
     pure @safe nothrow @nogc
     T toFloat(T)() const if (isFloatingPoint!T)
@@ -839,26 +933,23 @@ private:
         else
             FixedInt!(bits, false) x = data[$ - 1] & SIGN_BITS ? -this : this;
         
-        auto digs = digits;
 
-        if (digs > d)
+
+
+        FixedInt!(bits, false) pow10 = FixedInt!(bits, false)(10) ^^ (d);
+        uint[bits / 32] rem = void;
+        FixedInt!(bits, signed) q = void;
+        divrem(q.data, rem, x.data, pow10.data);
+        shr(pow10.data, 1);
+        if (cmpuu(rem, pow10.data) >= 0)
+            inc(q.data);
+        static if (signed)
         {
-            FixedInt!(bits, false) pow10 = FixedInt!(bits, false)(10) ^^ (digs - d);
-            uint[bits / 32] rem = void;
-            FixedInt!(bits, signed) q = void;
-            divrem(q.data, rem, x.data, pow10.data);
-            shr(pow10.data, 1);
-            if (cmpuu(rem, pow10.data) >= 0)
-                inc(q.data);
-            static if (signed)
-            {
-                if (data[$ - 1] & SIGN_BITS)
-                    neg(q.data);
-            }
-            return q;
+            if (data[$ - 1] & SIGN_BITS)
+                neg(q.data);
         }
-        else
-            return this;
+        return q;
+
     }
 
 
@@ -873,6 +964,13 @@ public:
     * boolean type.
     * Params:
     *  x = any integral, character, or boolean value.
+	* Examples:
+	---
+	assert(uint96(42) == 42);
+	assert(int96(-10) == -10);
+	assert(uint128('A') == 65);
+	assert(int160(true) == 1);
+	---
     */
     @safe pure nothrow @nogc 
     this(T)(auto const ref T x) if (isIntegral!T || isSomeChar!T || is(Unqual!T == bool))
@@ -892,14 +990,7 @@ public:
         }                   
     }
 
-    ///
-    unittest
-    {
-        assert(uint96(42) == 42);
-        assert(int96(-10) == -10);
-        assert(uint128('A') == 65);
-        assert(int160(true) == 1);
-    }
+
 
     /**
     * Constructs a fixed size integer from another one.
@@ -908,6 +999,13 @@ public:
     * Throws:
     *  $(PHOBOSREF conv,ConvOverflowException) if the specified value does not 
     *  fit in the current one.
+	* Examples:
+	---
+	assert(uint128(uint96(42)) == 42);
+	assert(int256(int1024(4242)) == 4242);
+	assert(int96(int128(-42)) == -42);
+	assert(int160(int96(-4242)) == -4242);
+	---
     */
     @safe pure nothrow @nogc 
     this(T)(auto const ref T x) if (isFixedInt!T && T.sizeof <= this.sizeof)
@@ -935,12 +1033,6 @@ public:
             throw new ConvOverflowException(format("The specified value '%s' does not fit in %d bits.", x, bits));                      
     }
 
-    ///
-    unittest
-    {
-        assert(uint128(uint96(42)) == 42);
-        assert(int96(int128(-42)) == -42);
-    }
 
     /** 
     * Constructs a fixed size integer from a string value or a range of input 
@@ -973,6 +1065,22 @@ public:
     *   $(B +/-) sign is accepted only for decimal input strings and if a 
     *   radix is not provided;<br/>
     *   Underscore characters are ignored.
+	* Examples:
+	---
+	assert(uint128("123") == 123);
+	assert(uint128("0xFFFFFFFF") == 0xFFFFFFFF);
+	assert(uint128("0b10101010") == 0b10101010);
+	assert(uint128("0o666") == 0x1b6);
+	assert(int128("-42") == -42);
+	assert(int128("+42") == 42);
+
+	assert(uint128("9999", 10) == 9999);
+	assert(uint128("AAAA", 16) == 0xAAAA);
+	assert(uint128("1111", 2) == 0b1111);
+
+	assert(uint96("123_456_789") == 123456789);
+	assert(int96("0xABCD_EF00") == 0xABCDEF00);
+	---
     */
     @safe 
     this(S)(auto const ref S s) if (isSomeString!S)
@@ -984,7 +1092,7 @@ public:
 
 		if (s[0] == '+')
 		{
-			if (s.length <= 2)
+			if (s.length < 2)
 				throw new ConvException("Expecting at least one digit");
 			tenRadix = true;
 			success = fromString10(s[1 .. $], overflow);
@@ -998,7 +1106,7 @@ public:
 			else
 			{
 				isNegative = true;
-				if (s.length <= 2)
+				if (s.length < 2)
 					throw new ConvException("Expecting at least one digit");
 				tenRadix = true;
 				success = fromString10(s[1 .. $], overflow);
@@ -1101,81 +1209,26 @@ public:
     }
 
     ///ditto
-    this(R)(R range) if (isInputRange!R && isSomeChar!(ElementType!R) && !isSomeString!R)
+    this(R)(R range) if (isIterable!R && isSomeChar!(ForeachType!R) && !isSomeString!R)
     {
-		bool success, isNegative, overflow, tenRadix;
+		bool success, isNegative, overflow;
+		uint radix;
 
-		if (range.empty)
-			throw new ConvException("The specified range is empty");
+		success = fromIterableWithHeader(range, overflow, isNegative, radix);
 
-		if (range.front == '+')
+		static if (!signed)
 		{
-			range.popFront();
-			if (range.empty)
-				throw new ConvException("Expecting at least one digit");
-			tenRadix = true;
-			success = fromRange(range, 10, overflow);
-		}
-		else if (range.front == '-')
-		{
-			static if (!signed)
-			{
+			if (isNegative)
 				throw new ConvOverflowException("Negative values are not accepted for unsigned fixed integers");
-			}
-			else
-			{
-				range.popFront();
-				isNegative = true;
-				if (range.empty)
-					throw new ConvException("Expecting at least one digit");
-				tenRadix = true;
-				success = fromRange(range, 10, overflow);
-			}
-
-		}
-		else if (range.front != '0')
-		{
-			tenRadix = true;
-			success = fromRange(range, 10, overflow);		
-		}
-		else
-		{
-			range.popFront();
-			if (range.empty)
-				success = true;
-			else
-			{
-				auto c = range.front();
-				switch (c)
-				{
-					case 'x':
-					case 'X':
-						range.popFront();
-						success = fromRange(range, 16, overflow);
-						break;
-					case 'o':
-					case 'O':
-						range.popFront();
-						success = fromRange(range, 8, overflow);
-						break;
-					case 'b':
-					case 'B':
-						range.popFront();
-						success = fromRange(range, 2, overflow);
-						break;
-					default:
-						tenRadix = true;
-						success = fromRange(range, 10, overflow);
-						break;
-				}
-			}
 		}
 
+		if (isNegative && radix != 10)
+			throw new ConvException("Negative values are not accepted for other raixes than 10");
 
 		//detect base 10 overflow
 		static if (signed)
 		{
-			if (success && tenRadix)
+			if (success && radix == 10)
 			{
 				if (isNegative)
 					neg(data);
@@ -1188,6 +1241,11 @@ public:
 				}
 			}
 		}
+		else
+		{
+			if (isNegative)
+				throw new ConvOverflowException("Negative values are not accepted for unsigned fixed integers");
+		}
 
 		if (overflow)
 			throw new ConvOverflowException(format("The specified value does not fit in %d bits.", bits));
@@ -1197,14 +1255,14 @@ public:
     }
 
     ///ditto
-    this(R)(R range, const uint radix) if (isInputRange!R && isSomeChar!(ElementType!R) && !isSomeString!R)
+    this(R)(R range, const uint radix) if (isIterable!R && isSomeChar!(ForeachType!R) && !isSomeString!R)
     {
         if (radix < 2 || radix > 36)
             throw new ConvException(format("The specified radix (%d) is not supported. Use a value between %d and %d.", radix, 2, 36));
 
         bool success, overflow;
 
-        success = fromRange(range, radix, overflow);
+        success = fromIterable(range, radix, overflow);
 		if (radix == 10 && (data[$ - 1] & SIGN_BITS))
 		{
 			overflow = true;
@@ -1219,23 +1277,6 @@ public:
         }
     }
 
-    ///
-    unittest
-    {
-        assert(uint128("123") == 123);
-        assert(uint128("0xFFFFFFFF") == 0xFFFFFFFF);
-        assert(uint128("0b10101010") == 0b10101010);
-        assert(uint128("0o666") == 0x1b6);
-        assert(int128("-42") == -42);
-        assert(int128("+42") == 42);
-
-        assert(uint128("9999", 10) == 9999);
-        assert(uint128("AAAA", 16) == 0xAAAA);
-        assert(uint128("1111", 2) == 0b1111);
-
-        assert(uint96("123_456_789") == 123456789);
-        assert(int96("0xABCD_EF00") == 0xABCDEF00);
-    }
 
     /**
     * Constructs a fixed size integer from a floating point value
@@ -1250,6 +1291,12 @@ public:
     * Notes:
     *  Only 80-bit $(D_KEYWORD real) type is supported. Other real types are 
     *  converted to $(D_KEYWORD double) before the construction;<br/>
+	* Examples:
+	---
+	assert(uint128(0.0) == 0);
+	assert(uint128(129.0) == 129);
+	assert(uint128(1.23E+3) == 1230);
+	---
     */
     @safe 
     this(F)(auto const ref F x) if (isFloatingPoint!F)
@@ -1271,15 +1318,6 @@ public:
     }
 
     
-
-    ///
-    unittest
-    {
-        assert(uint128(0.0) == 0);
-        assert(uint128(129.0) == 129);
-        assert(uint128(1.23E+3) == 1230);
-    }
-    
     /**
     * Constructs a fixed size integer using an _array or _range of any type
     * Params:
@@ -1291,26 +1329,31 @@ public:
     * Notes:
     *  The most significant bit of the _array or _range data will set the sign.<br/>
 	*  Character ranges or strings are interpreted as decimal numbers, not as raw data. 
-	*  Using a character _range or string will call one of the $(LOCALMREF2 _FixedInt,this.3,string constructors)
+	*  Using a character _range or string will call one of the $(LOCALMREF2 _FixedInt,this.3,string constructors)<br/>
+	* Examples:
+	---
+	assert(uint128([12]) == 12);
+	assert(uint96([0xAA, 0xBB]) == 0xBB000000AA);
+	---
     */
 	@trusted pure
-	this(A)(auto const ref A array) if (isArray!A && !isSomeString!A)
+	this(A)(auto const ref A array) if (isArray!A && !isSomeString!A && (__traits(isPOD, typeof(A.init)) || isScalarType!(typeof(A.init))))
 	{
 		alias E = Unqual!(typeof(A.init[0]));
 
 		enum elementSize = E.sizeof;
-		enum bytes = array.length * elementSize;
-		enum thisbytes = data.length * 4;
+		auto bytes = array.length * elementSize;
+		enum thisBytes = data.length * 4;
 		if (bytes > thisBytes)
 			throw new ConvOverflowException(format("The specified array does not fit in %d bits.", bits));
-		memcpy(array.ptr, data.ptr, bytes);
+		memcpy(data.ptr, array.ptr, bytes);
 	}
 
     ///ditto
     @trusted pure
-    this(R)(ref R range) if (isInputRange!R && !isArray!R && !isSomeChar!(ElementType!R))
+    this(R)(R range) if (isIterable!R && !isArray!R && !isSomeChar!(ForeachType!R) && (__traits(isPOD, ForeachType!R) || isScalarType!(ForeachType!R)))
     {
-		alias E = Unqual!(ElementType!R);
+		alias E = Unqual!(ForeachType!R);
 		enum elementSize = E.sizeof;
 		enum bufferSize = data.length * 4 / elementSize;
 
@@ -1318,24 +1361,18 @@ public:
 
 	    size_t i;
 
-		while (!range.empty && i < buffer.length)
+		foreach(c; range)
 		{
-			buffer[i++] = range.front;
-			range.popFront();
+			if (i >= buffer.length)
+				throw new ConvOverflowException(format("The specified range does not fit in %d bits.", bits));
+			buffer[i++] =  c;
 		}
 
-		memcpy(buffer.ptr, data.ptr, i * elementSize);
+		memcpy(data.ptr, buffer.ptr, i * elementSize);
 		
 
 		if (!range.empty)
 		    throw new ConvOverflowException(format("The specified range does not fit in %d bits.", bits));
-    }
-
-    ///
-    unittest
-    {
-		//assert(uint128([12]) == 12);
-		//assert(uint128([0xAA, 0xBB]) == 0xBBAA);
     }
 
 
@@ -1397,6 +1434,12 @@ public:
         }          
     }
 
+	@safe pure nothrow @nogc 
+    bool opEquals(T)(auto const ref T x) const if (isFloatingPoint!T) 
+    {
+        return toFloat!T() == x;
+    }
+
     @safe pure nothrow @nogc 
     int opCmp(T)(auto const ref T x) const if (isIntegral!T || isSomeChar!T || is(Unqual!T == bool)) 
     {
@@ -1433,6 +1476,17 @@ public:
             else
                 return cmpus(data, x.data);
         }          
+    }
+
+	@safe pure nothrow @nogc 
+    int opCmp(T)(auto const ref T x) const if (isFloatingPoint!T) 
+    {
+        auto f = toFloat!T();
+		if (f > x)
+			return 1;
+		if (f < x)
+			return -1;
+		return 0;
     }
 
     @safe pure nothrow @nogc 
@@ -2006,6 +2060,15 @@ public:
     * Notes:
     *   This function is not intended to be used directly, but it's
     *   used internally by associative arrays.
+	* Examples:
+	---
+	string[int96] dictionary;
+	dictionary[int96(0)] = "zero";
+	dictionary[int96(10)] = "ten";
+
+	assert(dictionary[int96(0)] == "zero");
+	assert(dictionary[int96(10)] == "ten");
+	---
     */
     @safe pure nothrow @nogc
     size_t toHash() const
@@ -2017,22 +2080,17 @@ public:
                                hash(data[data.length / 2 .. $]);
     }
 
-    ///
-    unittest
-    {
-        string[int96] dictionary;
-        dictionary[int96(0)] = "zero";
-        dictionary[int96(10)] = "ten";
-        
-        assert(dictionary[int96(0)] == "zero");
-        assert(dictionary[int96(10)] == "ten");
-    }
 
     /**
     * Converts the current FixedInt value to its default decimal 
     * string representation
     * Returns:
     *   A base-10 representation of the current FixedInt value  
+	* Examples:
+	---
+	assert(uint96(123).toString() == "123");
+	assert(int128(-25).toString() == "-25");
+	---
     */
     @safe pure nothrow
     string toString() const
@@ -2053,13 +2111,6 @@ public:
                 buffer[--len] = '-';
         }
         return buffer[len .. $].idup();
-    }
-
-    ///
-    unittest
-    {
-        assert(uint96(123).toString() == "123");
-        assert(int128(-25).toString() == "-25");
     }
 
     /**
@@ -2086,6 +2137,13 @@ public:
     *   <li>$(B %b) - unsigned binary</li>
     *   <li>$(B %s) - default string representation</li>
     *   </ul>
+	* Examples:
+	---
+	import std.format;
+	assert(format("%d in hex is %x or in octal is %o", 
+		uint96(123), int96(123), uint128(123)) ==
+		"123 in hex is 7b or in octal is 173");
+	---
     */
     void toString(C)(scope void delegate(const(C)[]) sink, ref FormatSpec!char f) const if (isSomeChar!C)
     {
@@ -2155,14 +2213,6 @@ public:
         }
     }
 
-    ///
-    unittest
-    {
-        import std.format;
-        assert(format("%d in hex is %x or in octal is %o", 
-                      uint96(123), int96(123), uint128(123)) ==
-               "123 in hex is 7b or in octal is 173");
-    }
 
     /**
     * Converts the current FixedInt value to its custom base representation
@@ -2172,6 +2222,13 @@ public:
     * Throws:
     *  $(PHOBOSREF conv, ConvException) if the specified radix is outside the 
     *  interval [2; 36].  
+	* Examples:
+	---
+	assert(uint96(123).to!string(10) == "123");
+	assert(uint96(123).to!string(16, LetterCase.lower) == "7b");
+	assert(uint96(123).to!string(16, LetterCase.upper) == "7B");
+	assert(uint96(123).to!string(36) == "3F");
+	---
     */
     @safe
     S to(S)(const uint radix = 10, const LetterCase lettercase = LetterCase.upper) const if (isSomeString!S)
@@ -2199,14 +2256,6 @@ public:
         return buffer[r .. $].dup();
     }
 
-    ///
-    unittest
-    {
-        assert(uint96(123).to!string(10) == "123");
-        assert(uint96(123).to!string(16, LetterCase.lower) == "7b");
-        assert(uint96(123).to!string(16, LetterCase.upper) == "7B");
-        assert(uint96(123).to!string(36) == "3F");
-    }
 
     /** 
     * Converts the current fixed size integer _to its equivalent character range representation 
@@ -2223,9 +2272,8 @@ public:
     auto toChars(uint radix = 10, C = char, LetterCase letterCase = LetterCase.upper)() if (isSomeChar!C)
     {
         static assert(radix >= 2 && radix <= 36);
-        BufferedRange!(C, BUFFER_SIZE) range = void;
 
-        static if (radix >= 32)
+		static if (radix >= 32)
             enum BUFFER_SIZE = bits / 5;
         else static if (radix >= 16)
             enum BUFFER_SIZE = bits / 4;
@@ -2238,6 +2286,10 @@ public:
         else
             enum BUFFER_SIZE = bits;
 
+
+        BufferedRange!(C, BUFFER_SIZE) range = void;
+
+        
         static if (radix == 10)
         {
             static if (signed)
@@ -2255,7 +2307,7 @@ public:
                 range.lo = toBuffer(range.buffer, radix);
         }
         else
-            range.lo = value.toBuffer(range.buffer, radix, letterCase = LetterCase.upper);
+            range.lo = toBuffer(range.buffer, radix, letterCase == LetterCase.upper);
 
         range.hi = BUFFER_SIZE - 1;
         return range;
@@ -2265,85 +2317,182 @@ public:
     /** 
     * Converts the current fixed size integer _to an array or range of byte data
     * Returns:
-    *   A byte array or a range of bytes as the internal representation of the 
+    *   An array or a range as the internal representation of the 
     *   current fixed size integer.
+	* Notes:
+	*   The internal representation of a fixed size integer is in fact
+	*   a $(D_KEYWORD uint)[] array with $(D_KEYWORD sizeof) / 4 elements. 
+	*   To avoid the garbage collector, direct pointer access is possible,
+	*   each fixed size integer containing exactly $(D_KEYWORD sizeof) bytes;
+	* Examples:
+	---
+	assert(uint96(0xAA).toArray!int() == [0xAA, 0, 0]);
+	assert(uint128(0xAAAABBBBCCCCDDDD).toArray!int() == [0xCCCCDDDD, 0xAAAABBBB, 0, 0]);
+
+	//usage with direct pointer access
+	uint96 x = uint96("0xAAAA_BBBB_CCCC_DDDD_EEEE_FFFF");
+	byte* bytes = cast(byte*)&x;
+	assert(*bytes == 0xFF);
+	assert(*(bytes + x.sizeof - 1) == 0xAA;
+	---
     */
-    @safe pure nothrow
-    ubyte[] toBytes() const
+    @trusted pure nothrow
+    T[] toArray(T)() const if (__traits(isPOD, T) || isScalarType!T)
     {
-        return cast(ubyte[])(data.dup);
+        enum elementSize = T.sizeof;
+		enum bufferSize = data.length * 4 / elementSize;
+		enum size = bufferSize == 0 ? 1: bufferSize;
+		Unqual!T[size] buffer;
+		memcpy(buffer.ptr, data.ptr, data.length * 4);
+		return buffer.dup;
     }
 
     ///ditto
-    @safe pure nothrow @nogc
-    auto toRange() const
+    @trusted pure nothrow @nogc
+    auto toRange(T)() const if (__traits(isPOD, T) || isScalarType!T)
     {
+		enum elementSize = T.sizeof;
+		enum bufferSize = data.length * 4 / elementSize;
+		enum size = bufferSize == 0 ? 1: bufferSize;
+
         static struct Result
         {
-            FixedInt!(bits, signed) d;
+            Unqual!T[size] buffer;;
             ptrdiff_t index;
             int shift;
-            @property bool empty() { return index < 0 || index >= d.data.length; }
-            @property ubyte front() { return cast(ubyte)(d.data[index] >>> shift); }
-            void popFront() { shift += 8; if (shift == 32) { shift = 0; ++index; } }
+            @property bool empty() { return index < 0 || index >= buffer.length; }
+            @property ubyte front() { return buffer[index]; }
+            void popFront() { ++index; }
         }
         auto ret = Result();
-        ret.d = this;
+		memcpy(ret.buffer.ptr, data.ptr, data.length * 4);
         return ret;
-    }
-
-    ///
-    unittest
-    {
-        //assert(uint96(0xAABB).toBytes() == [0xBB, 0xAA]);
-    }
-
-
-    /**
-    * Calculates the number of decimal _digits
-    * Returns: 
-    *   Number of decimal _digits for the current value or 0 for a zero value.
-    */
-    @safe pure nothrow @nogc
-    @property uint digits() const
-    {
-        static if (!signed)
-        {
-            alias x = this;
-        }
-        else
-        {
-            FixedInt!(bits, false) x = (data[$ - 1] & SIGN_BITS) ? -this : this;
-        }
-
-        auto usedbits = bits - clz(x.data);
-        return cast(uint)(floor(usedbits * log(2) / log(10)));
-    }
-
-
-    ///
-    unittest
-    {
-		//assert(uint96(123).digits == 3);
-		//assert(int128(-12345).digits == 5);
-		//assert(uint128.max.digits == 38);
-    }
-    
+    }   
 }
+
+/**
+* Counts the number of base-2 digits (bits)
+* Params:
+*  x = a fixed size integer
+* Returns:
+*   The number of base-2 digits necessary to represent the specified value or zero if x is 0.
+*/
+@safe pure nothrow @nogc
+auto digits2(F)(auto const ref F x) if (isFixedInt!F)
+{
+	if (all(x.data, ZERO_BITS))
+		return 0;
+	static if (isUnsignedFixedInt!F)
+		return F.sizeof * 4 - clz(x.data);
+	else
+	{
+		if (x.data[$ - 1] & SIGN_BITS)
+		{
+			UnsignedFixedInt!F y = -x;
+			return F.sizeof * 4 - clz(y.data);
+		}
+		else
+			return F.sizeof * 4 - clz(x.data);
+	}
+}
+
+///
+unittest
+{
+	assert (digits2(uint96(10)) == 4);
+	assert (digits2(int128(-10)) == 4);
+	assert (digits2(uint96("0x123_4567_89AB_CDEF")) == 57);
+}
+
+/**
+* Counts the number of base-10 digits (decimal digits)
+* Params:
+*  x = a fixed size integer
+* Returns:
+*   The number of base-10 digits necessary to represent the specified value or zero if x is 0.
+*/
+@safe pure nothrow @nogc
+auto digits10(F)(auto const ref F x) if (isFixedInt!F)
+{
+	alias U = UnsignedFixedInt!F;
+	if (all(x.data, ZERO_BITS))
+		return 0;
+	static if (isUnsignedFixedInt!F)
+		alias y = x;
+	else
+		U y = x.data[$ - 1] & SIGN_BITS ? -x : x;
+
+	auto usedBits = F.sizeof * 4 - clz(y.data);
+
+	if (usedBits <= 3)
+		return 1;
+
+	auto min = cast(uint)(ceil((usedBits - 1) * LOG2));
+	return x < pow10!U(min) ? min : min + 1;
+}
+
+///
+unittest
+{
+	assert (digits10(uint96(10)) == 2);
+	assert (digits10(int128(-10)) == 2);
+	assert (digits10(uint96("1234567890")) == 10);
+}
+
 /**
 * Check whether a number is a power of two.
 * Params:
 *  x = a fixed size integer
 * Returns:
-*   true x that is a power of two, otherwise false. Zero values are not considered powers of 2.
+*   true if x is a power of two, otherwise false. Zero or negative values are not considered powers of 2.
 */
 @safe pure nothrow @nogc
 bool isPowerOf2(F)(auto const ref F x) if (isFixedInt!F)
 {
+	if (all(x.data, ZERO_BITS))
+		return false;
     static if (isUnsignedFixedInt!F)
         return ispow2(x.data);
     else
-        return (x.data[$ - 1] & SIGN_BITS) && ispow2(x.data);
+        return !(x.data[$ - 1] & SIGN_BITS) && ispow2(x.data);
+}
+
+///
+unittest
+{
+	assert (isPowerOf2(uint96(8)));
+	assert (!isPowerOf2(int128(-10)));
+	assert (isPowerOf2(uint96("1024")));
+}
+
+
+/**
+* Check whether a number is a power of ten.
+* Params:
+*  x = a fixed size integer
+* Returns:
+*   true if x is a power of ten, otherwise false. Zero or negative values are not considered powers of 10.
+*/
+@safe pure nothrow @nogc
+bool isPowerOf10(F)(auto const ref F x) if (isFixedInt!F)
+{
+	alias U = UnsignedFixedInt!F;
+	if (all(x.data, ZERO_BITS))
+		return false;
+	static if (isSignedFixedInt!F)
+	{
+		if (x.data[$ - 1] & SIGN_BITS)
+			return false;
+	}
+	return x == powerOf10!U(digits10(x) - 1);
+}
+
+///
+unittest
+{
+	assert (isPowerOf10(uint96(100)));
+	assert (!isPowerOf10(int128(-100)));
+	assert (isPowerOf10(uint96("10000000000000000000000")));
 }
 
 /**
@@ -2351,7 +2500,7 @@ bool isPowerOf2(F)(auto const ref F x) if (isFixedInt!F)
 * Params:
 *  x = a fixed size integer
 * Returns:
-*   The next value after x that is a power of two, zero if x is 0.
+*   The next value after x that is a power of two, zero if x is 0 or on overflow.
 */
 @safe pure nothrow @nogc
 auto nextPow2(F)(auto const ref F x) if (isFixedInt!F)
@@ -2366,17 +2515,77 @@ auto nextPow2(F)(auto const ref F x) if (isFixedInt!F)
     }
     else
     {
-        bool negative = cast(bool)(data[$ - 1] & SIGN_BITS);
-        FixedInt!(bits, false) x = negative ? -x : x;
-        auto shift = clz(x) + 1;
+        bool negative = cast(bool)(x.data[$ - 1] & SIGN_BITS);
+        FixedInt!(bits, false) y = negative ? -x : x;
+        auto shift = clz(y.data) + 1;
         if (shift >= F.sizeof * 4)
             return F(0);
         else
         {
-            x <<= (clz(x) + 1);
-            return F(negative ? x : -x);
+            y <<= (clz(y.data) + 1);
+            return F(negative ? y : -y);
         }
     }
+}
+
+///
+unittest
+{
+	assert (nextPow2(uint96(100)) == 128);
+	assert (nextPow2(int96(-100)) == -128);
+	assert (nextPow2(uint128(2) == 4));
+}
+
+/**
+* Gives the next power of ten.
+* Params:
+*  x = a fixed size integer
+* Returns:
+*   The next value after x that is a power of ten, zero if x is 0 or on overflow.
+*/
+@safe pure nothrow @nogc
+auto nextPow10(F)(auto const ref F x) if (isFixedInt!F)
+{
+	alias U = UnsignedFixedInt!F;
+    if (all(x.data, ZERO_BITS))
+        return 0;
+
+	if (x == 1U)
+		return x;
+
+	auto digits = digits10(x);
+
+	static if (isUnsignedFixedInt!F)
+		return pow10!F(digits);
+	else
+	{
+
+		auto p10 = pow10!U(digits);
+		if (p10.data[$ - 1] & SIGN_BITS)
+			return 0;
+		else
+		{
+			if (x.data[$ - 1] & SIGN_BITS)
+			{
+				F r = -p10;
+				if (x.data[$ - 1] & SIGN_BITS)
+					return r;
+				else
+					return 0;
+			}
+			else
+				return F(p10);
+		}
+	}
+}
+
+
+///
+unittest
+{
+	assert (nextPow10(uint96(99)) == 100);
+	assert (nextPow10(int96(-99)) == -100);
+	assert (nextPow10(uint128(100) == 1000));
 }
 
 /**
@@ -2405,6 +2614,71 @@ auto truncPow2(F)(auto const ref F x) if (isFixedInt!F)
     }
 }
 
+///
+unittest
+{
+	assert (truncPow2(uint96(100)) == 64);
+	assert (truncPow2(int96(-100)) == -64);
+	assert (truncPow2(uint128(2) == 2));
+}
+
+
+/**
+* Gives the previous power of two.
+* Params:
+*  x = a fixed size integer
+* Returns:
+*   The previous value before x that is a power of two, x itself if it's already a power of two, zero if x is 0.
+*/
+@safe pure nothrow @nogc
+auto truncPow10(F)(auto const ref F x) if (isFixedInt!F)
+{
+	alias U = UnsignedFixedInt!F;
+    if (all(x.data, ZERO_BITS))
+        return 0;
+
+	if (x == 1U)
+		return F(10U);
+
+	auto digits = digits10(x);
+
+	static if (isUnsignedFixedInt!F)
+		return pow10!F(digits);
+	else
+	{
+		U u = (x.data & SIGN_BITS) ? -x : x;
+		if (isPowerOf10(u))
+			return x;
+
+		auto p10 = pow10!U(digits - 1);
+		if (p10.data[$ - 1] & SIGN_BITS)
+			return 0;
+		else
+		{
+			if (x.data[$ - 1] & SIGN_BITS)
+			{
+				F r = -p10;
+				if (x.data[$ - 1] & SIGN_BITS)
+					return r;
+				else
+					return 0;
+			}
+			else
+				return F(p10);
+		}
+	}
+    
+}
+
+///
+unittest
+{
+	assert (truncPow10(uint96(99)) == 10);
+	assert (truncPow10(int96(-99)) == -10);
+	assert (truncPow10(uint128(10) == 10));
+}
+
+
 private:
 
 template isSomeUnsigned(T)
@@ -2427,6 +2701,46 @@ template isSomeSigned(T)
         enum isSomeSigned = T._signed;
     else
         enum isSomeSigned = false;
+}
+
+F powerOf10(F)(const uint p) if (isUnsignedFixedInt!F)
+{
+	if (p <= maxPow10)
+	{
+		auto powArray = pow10[p];
+		if (powArray.length > F.sizeof / 4)
+			return F(0);
+		else
+		{
+			F ret = void;
+			mov(ret.data, powArray);
+			return ret;
+		}
+	}
+	else
+	{
+		F ret = void;
+		uint[F.sizeof / 4 + 1] acc;
+		mov(ret.data, pow10[maxPow10]);
+		auto usedints = used(ret.data);
+		auto remainingPow10 = p - maxPow10;
+		while (remainingPow10 > 0)
+		{
+			auto targetInts = usedints + pow10[remaininingPow].length;
+			if (targetInts > acc.length)
+				return F(0);
+			mul(acc, ret.data[0 .. usedints], pow10[remainingPow]);
+			if (acc[$ - 1])
+				return F(0);
+			ret.data[] = acc[0 .. $ - 1];
+			usedInts = used(ret.data);
+			if (remainingPow > maxPow10)
+				remainingPow -= maxPow10;
+			else
+				remainingPow = 0;
+		}
+		return ret;
+	}
 }
 
 public:
@@ -2476,7 +2790,6 @@ template isSignedFixedInt(T)
     enum isSignedFixedInt = is(T : FixedInt!(bits, signed), uint bits, bool signed = true);
 }
 
-
 ///
 unittest
 {
@@ -2485,6 +2798,47 @@ unittest
     static assert (!isSignedFixedInt!uint);
     static assert (!isSignedFixedInt!int);
 }
+
+/** 
+* Gets the corresponding unsigned fixed size integer for
+* the specified type
+*/
+template UnsignedFixedInt(T) if (isFixedInt!T)
+{
+    static if (isUnsignedFixedInt!T)
+		alias UnsignedFixedInt = T;
+	else
+		alias UnsignedFixedInt = FixedInt!(T.sizeof * 4, false);
+}
+
+///
+unittest
+{
+    static assert (is(UnsignedFixedInt!uint128 == uint128));
+    static assert (is(UnsignedFixedInt!int128 == uint128));
+}
+
+/**
+* Gets the corresponding signed fixed size integer for
+* the specified type
+*/
+template SignedFixedInt(T) if (isFixedInt!T)
+{
+    static if (isSignedFixedInt!T)
+		alias SignedFixedInt = T;
+	else
+		alias SignedFixedInt = FixedInt!(T.sizeof * 4, true);
+}
+
+///
+unittest
+{
+    static assert (is(SignedFixedInt!uint128 == int128));
+    static assert (is(SignedFixedInt!int128 == int128));
+}
+
+
+
 
 
 

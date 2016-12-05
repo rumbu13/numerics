@@ -19,11 +19,11 @@
 
 <br><br>
 <b>Source:</b><br>
-<a href="https://github.com/rumbu13/<u>fixed</u>/package.d">package.d</a>
+<a href="https://github.com/rumbu13/numerics/blob/master/src/numerics/fixed.d"><u>fixed</u>.d</a>
 
 <br><br>
 
-<dl><dt><big><a name="FixedInt"></a>struct <u>FixedInt</u>(uint bits, bool signed = true) if (bits &gt;= 96 &amp;&amp; bits % 32 == 0);
+$(DDOC_MODULE_MEMBERS <dt><big><a name="FixedInt"></a>struct <u>FixedInt</u>(uint bits, bool signed = true) if (bits &gt;= 96 &amp;&amp; bits % 32 == 0);
 </big></dt>
 <dd>The <u>FixedInt</u> type is a type that represents a fixed size integer.
  <u>FixedInt</u> type implements all the arithmentic operations specific to
@@ -46,44 +46,50 @@
   <font color=blue>alias</font> uint1024 = <u>FixedInt</u>!(1024, <font color=blue>false</font>);
 
   uint128 a = 10;
-  int96 b = int96(<font color=red>"12345678901234567890123456789"</font>);
+  <font color=blue>auto</font> b = int96(<font color=red>"12345678901234567890123456789"</font>);
 </pre>
 <br><br>
 <b>Members:</b><br>
-<a href="#FixedInt.digits">digits</a>
-   <a href="#FixedInt.max">max</a>
-   <a href="#FixedInt.min">min</a>
-   <a href="#FixedInt.this">this</a>
-   <a href="#FixedInt.to">to</a>
-   <a href="#FixedInt.toBytes">toBytes</a>
-   <a href="#FixedInt.toChars">toChars</a>
-   <a href="#FixedInt.toHash">toHash</a>
-   <a href="#FixedInt.toRange">toRange</a>
+<a href="#FixedInt.max">max</a>,
+   <a href="#FixedInt.min">min</a>,
+   <a href="#FixedInt.this">this</a>,
+   <a href="#FixedInt.to">to</a>,
+   <a href="#FixedInt.toArray">toArray</a>,
+   <a href="#FixedInt.toChars">toChars</a>,
+   <a href="#FixedInt.toHash">toHash</a>,
+   <a href="#FixedInt.toRange">toRange</a>,
    <a href="#FixedInt.toString">toString</a>
 <br><br>
 <b>Initialization:</b><br>
 from <a href="#FixedInt.this">integral</a>,
         <a href="#FixedInt.this.2">FixedInt</a>,
         <a href="#FixedInt.this.4">floating point</a>,
-        <a href="#FixedInt.this.3">string or character range</a>
-        <a href="#FixedInt.this.5">bytes or byte range</a>
+        <a href="#FixedInt.this.3">string or character range</a>,
+        <a href="#FixedInt.this.5">array or data range </a>
 <br><br>
 <b>Functions:</b><br>
-<a href="#isPowerOf2">isPowerOf2</a>
-   <a href="#nextPow2">nextPow2</a>
-   <a href="#truncPow2">truncPow2</a>
+<a href="#digits2">digits2</a>,
+   <a href="#digits10">digits10</a>,
+   <a href="#isPowerOf2">isPowerOf2</a>,
+   <a href="#isPowerOf10">isPowerOf10</a>,
+   <a href="#nextPow2">nextPow2</a>,
+   <a href="#nextPow10">nextPow10</a>,
+   <a href="#truncPow2">truncPow2</a>,
+   <a href="#truncPow10">truncPow10</a>
 <br><br>
 <b>Traits:</b><br>
-<a href="#isFixedInt">isFixedInt</a>
-   <a href="#isSignedFixedInt">isSignedFixedInt</a>
-   <a href="#isUnsignedFixedInt">isUnsignedFixedInt</a>
+<a href="#isFixedInt">isFixedInt</a>,
+   <a href="#isSignedFixedInt">isSignedFixedInt</a>,
+   <a href="#isUnsignedFixedInt">isUnsignedFixedInt</a>,
+   <a href="#SignedFixedInt">SignedFixedInt</a>,
+   <a href="#UnsignedFixedInt">UnsignedFixedInt</a>,
 
 <br><br>
 <b>Operators:</b><br>
 <table>       <tr><th>Operation</th> <th>Expression</th> <th>Left (A a)</th> <th>Right (B b)</th> <th>Result</th></tr>
        <tr><td>Assignment</td>
             <td>a = b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Positive</td>
             <td>+a</td> <td><u>FixedInt</u></td> <td>-</td>
@@ -102,76 +108,76 @@ from <a href="#FixedInt.this">integral</a>,
             <td><u>FixedInt</u></td></tr>
        <tr><td>Equality</td>
             <td>a == b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, floats, chars, bool, <u>FixedInt</u></td>
             <td>bool</td></tr>
        <tr><td>Order</td>
             <td>a &lt;&gt; b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, floats, chars, bool, <u>FixedInt</u></td>
             <td>bool</td></tr>
        <tr><td>Casting</td>
             <td>cast(B)a</td>
             <td><u>FixedInt</u></td>
-            <td>integrals, floats, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, floats, chars, bool, <u>FixedInt</u></td>
             <td>B</td></tr>
        <tr><td>Logical and</td>
             <td>a &amp; b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Logical or</td>
             <td>a | b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Logical xor</td>
             <td>a ^ b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Addition</td>
             <td>a + b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Substraction</td>
             <td>a - b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Multiplication</td>
             <td>a * b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Division</td>
             <td>a / b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Modulo</td>
             <td>a % b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars, bool or <u>FixedInt</u></td>
+            <td>integrals, chars, bool, <u>FixedInt</u></td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Shift left</td>
             <td>a &lt;&lt; b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars or bool</td>
+            <td>integrals, chars, bool</td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Shift right</td>
             <td>a &gt;&gt;&gt; b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars or bool</td>
+            <td>integrals, chars, bool</td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Arithmetic shift right</td>
             <td>a &gt;&gt; b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars or bool</td>
+            <td>integrals, chars, bool</td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Shift left</td>
-            <td>a &lt;&lt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>a &lt;&lt; b</td> <td>integrals, chars, bool</td> <td><u>FixedInt</u></td>
             <td>A</td></tr>
        <tr><td>Shift right</td>
-            <td>a &gt;&gt;&gt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>a &gt;&gt;&gt; b</td> <td>integrals, chars, bool</td> <td><u>FixedInt</u></td>
             <td>A</td></tr>
        <tr><td>Arithmetic shift right</td>
-            <td>a &gt;&gt; b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>a &gt;&gt; b</td> <td>integrals, chars, bool</td> <td><u>FixedInt</u></td>
             <td>A</td></tr>
        <tr><td>Power</td>
             <td>a ^^ b</td> <td><u>FixedInt</u></td>
-            <td>integrals, chars or bool</td>
+            <td>integrals, chars, bool</td>
             <td><u>FixedInt</u></td></tr>
        <tr><td>Power</td>
-            <td>a ^^ b</td> <td>integrals, chars or bool</td> <td><u>FixedInt</u></td>
+            <td>a ^^ b</td> <td>integrals, chars, bool</td> <td><u>FixedInt</u></td>
             <td>A</td></tr>
    </table>
 
@@ -197,13 +203,13 @@ All operators are <font color=blue>@safe pure nothrow @nogc</font>;<br/>
 <td>any integral, character, or boolean value.</td></tr>
 </table><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint96(42) == 42);
+<pre class="d_code"><font color=blue>assert</font>(uint96(42) == 42);
 <font color=blue>assert</font>(int96(-10) == -10);
 <font color=blue>assert</font>(uint128('A') == 65);
 <font color=blue>assert</font>(int160(<font color=blue>true</font>) == 1);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.this.2"></a>pure nothrow @nogc @safe this(T)(auto ref const T <i>x</i>) if (isFixedInt!T &amp;&amp; T.sizeof &lt;= this.sizeof);
 <br>this(T)(auto ref const T <i>x</i>) if (isFixedInt!T &amp;&amp; T.sizeof &gt; this.sizeof);
@@ -216,18 +222,21 @@ All operators are <font color=blue>@safe pure nothrow @nogc</font>;<br/>
 </table><br>
 <b>Throws:</b><br>
 <a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the specified value does not
-  fit in the current one.<br><br>
+  fit in the current one.
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint128(uint96(42)) == 42);
+<pre class="d_code"><font color=blue>assert</font>(uint128(uint96(42)) == 42);
+<font color=blue>assert</font>(int256(int1024(4242)) == 4242);
 <font color=blue>assert</font>(int96(int128(-42)) == -42);
+<font color=blue>assert</font>(int160(int96(-4242)) == -4242);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.this.3"></a>@safe this(S)(auto ref const S <i>s</i>) if (isSomeString!S);
 <br>@safe this(S)(auto ref const S <i>s</i>, const uint <i>radix</i>) if (isSomeString!S);
-<br>this(R)(ref R <i>range</i>) if (isInputRange!R &amp;&amp; isSomeChar!(ElementType!R) &amp;&amp; !isSomeString!R);
-<br>this(R)(ref R <i>range</i>, const uint <i>radix</i>) if (isInputRange!R &amp;&amp; isSomeChar!(ElementType!R) &amp;&amp; !isSomeString!R);
+<br>this(R)(R <i>range</i>) if (isIterable!R &amp;&amp; isSomeChar!(ForeachType!R) &amp;&amp; !isSomeString!R);
+<br>this(R)(R <i>range</i>, const uint <i>radix</i>) if (isIterable!R &amp;&amp; isSomeChar!(ForeachType!R) &amp;&amp; !isSomeString!R);
 </big></dt>
 <dd>Constructs a fixed size integer from a string value or a <i>range</i> of input
  characters
@@ -245,6 +254,8 @@ All operators are <font color=blue>@safe pure nothrow @nogc</font>;<br/>
 <b>Throws:</b><br>
 <a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the value does not fit in
   the current FixedInt type;<br/>
+  <a href="https://dlang.org/phobos/std_conv.html#ConvOverflowException">ConvOverflowException</a> if the value is negative and the
+  current type is unsigned;<br/>
   <a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified string is empty or
   contains invalid characters;<br/>
   <a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified <i>radix</i> is outside the
@@ -262,10 +273,10 @@ Strings starting with <b>0x</b> or <b>0X</b> will be interpreted as
    is not provided;<br/>
    <b>+/-</b> sign is accepted only for decimal input strings and if a
    <i>radix</i> is not provided;<br/>
-   Underscore characters are ignored.<br><br>
+   Underscore characters are ignored.
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint128(<font color=red>"123"</font>) == 123);
+<pre class="d_code"><font color=blue>assert</font>(uint128(<font color=red>"123"</font>) == 123);
 <font color=blue>assert</font>(uint128(<font color=red>"0xFFFFFFFF"</font>) == 0xFFFFFFFF);
 <font color=blue>assert</font>(uint128(<font color=red>"0b10101010"</font>) == 0b10101010);
 <font color=blue>assert</font>(uint128(<font color=red>"0o666"</font>) == 0x1b6);
@@ -280,6 +291,7 @@ Strings starting with <b>0x</b> or <b>0X</b> will be interpreted as
 <font color=blue>assert</font>(int96(<font color=red>"0xABCD_EF00"</font>) == 0xABCDEF00);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.this.4"></a>@safe this(F)(auto ref const F <i>x</i>) if (isFloatingPoint!F);
 </big></dt>
@@ -298,17 +310,18 @@ Strings starting with <b>0x</b> or <b>0X</b> will be interpreted as
 <br><br>
 <b>Notes:</b><br>
 Only 80-bit <font color=blue>real</font> type is supported. Other real types are
-  converted to <font color=blue>double</font> before the construction;<br/><br><br>
+  converted to <font color=blue>double</font> before the construction;<br/>
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint128(0.0) == 0);
+<pre class="d_code"><font color=blue>assert</font>(uint128(0.0) == 0);
 <font color=blue>assert</font>(uint128(129.0) == 129);
 <font color=blue>assert</font>(uint128(1.23E+3) == 1230);
 </pre>
 <br><br>
+
 </dd>
-<dt><big><a name="FixedInt.this.5"></a>pure @trusted this(A)(auto ref const A <i>array</i>) if (isArray!A &amp;&amp; !isSomeString!A);
-<br>pure @trusted this(R)(ref R <i>range</i>) if (isInputRange!R &amp;&amp; !isArray!R &amp;&amp; !isSomeChar!(ElementType!R));
+<dt><big><a name="FixedInt.this.5"></a>pure @trusted this(A)(auto ref const A <i>array</i>) if (isArray!A &amp;&amp; !isSomeString!A &amp;&amp; (__traits(isPOD, typeof(A.init)) || isScalarType!(typeof(A.init))));
+<br>pure @trusted this(R)(R <i>range</i>) if (isIterable!R &amp;&amp; !isArray!R &amp;&amp; !isSomeChar!(ForeachType!R) &amp;&amp; (__traits(isPOD, ForeachType!R) || isScalarType!(ForeachType!R)));
 </big></dt>
 <dd>Constructs a fixed size integer using an array or range of any type
 <br><br>
@@ -325,13 +338,14 @@ Only 80-bit <font color=blue>real</font> type is supported. Other real types are
 <b>Notes:</b><br>
 The most significant bit of the array or range data will set the sign.<br/>
   Character ranges or strings are interpreted as decimal numbers, not as raw data.
-  Using a character range or string will call one of the <a href="#FixedInt.this.3">string constructors</a><br><br>
-<b>Examples:</b><br>
-<pre class="d_code">
-<font color=green>//assert(uint128([12]) == 12);
-</font><font color=green>//assert(uint128([0xAA, 0xBB]) == 0xBBAA);
-</font></pre>
+  Using a character range or string will call one of the <a href="#FixedInt.this.3">string constructors</a><br/>
 <br><br>
+<b>Examples:</b><br>
+<pre class="d_code"><font color=blue>assert</font>(uint128([12]) == 12);
+<font color=blue>assert</font>(uint96([0xAA, 0xBB]) == 0xBB000000AA);
+</pre>
+<br><br>
+
 </dd>
 <dt><big><a name="FixedInt.toHash"></a>const pure nothrow @nogc @safe size_t <u>toHash</u>();
 </big></dt>
@@ -342,10 +356,10 @@ a unique hash value
 <br><br>
 <b>Notes:</b><br>
 This function is not intended to be used directly, but it's
-   used internally by associative arrays.<br><br>
+   used internally by associative arrays.
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-string[int96] dictionary;
+<pre class="d_code">string[int96] dictionary;
 dictionary[int96(0)] = <font color=red>"zero"</font>;
 dictionary[int96(10)] = <font color=red>"ten"</font>;
 
@@ -353,6 +367,7 @@ dictionary[int96(10)] = <font color=red>"ten"</font>;
 <font color=blue>assert</font>(dictionary[int96(10)] == <font color=red>"ten"</font>);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.toString"></a>const pure nothrow @safe string <u>toString</u>();
 </big></dt>
@@ -360,13 +375,14 @@ dictionary[int96(10)] = <font color=red>"ten"</font>;
  string representation
 <br><br>
 <b>Returns:</b><br>
-A base-10 representation of the current FixedInt value<br><br>
+A base-10 representation of the current FixedInt value
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint96(123).<u>toString</u>() == <font color=red>"123"</font>);
+<pre class="d_code"><font color=blue>assert</font>(uint96(123).<u>toString</u>() == <font color=red>"123"</font>);
 <font color=blue>assert</font>(int128(-25).<u>toString</u>() == <font color=red>"-25"</font>);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.toString.2"></a>const void <u>toString</u>(C)(scope void delegate(const(C)[]) <i>sink</i>, ref FormatSpec!char <i>f</i>) if (isSomeChar!C);
 </big></dt>
@@ -397,15 +413,16 @@ This function is not supposed to be used directly, but it's used
    <li><b>%o</b> - unsigned octal</li>
    <li><b>%b</b> - unsigned binary</li>
    <li><b>%s</b> - default string representation</li>
-   </ul><br><br>
+   </ul>
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>import</font> std.format;
-<font color=blue>assert</font>(format(<font color=red>"%d in hex is %x or in octal is %o"</font>, 
-              uint96(123), int96(123), uint128(123)) ==
-       <font color=red>"123 in hex is 7b or in octal is 173"</font>);
+<pre class="d_code"><font color=blue>import</font> std.format;
+<font color=blue>assert</font>(format(<font color=red>"%d in hex is %x or in octal is %o"</font>,
+	uint96(123), int96(123), uint128(123)) ==
+	<font color=red>"123 in hex is 7b or in octal is 173"</font>);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.to"></a>const @safe S <u>to</u>(S)(const uint <i>radix</i> = 10, const LetterCase <i>lettercase</i> = LetterCase.upper) if (isSomeString!S);
 </big></dt>
@@ -419,15 +436,16 @@ This function is not supposed to be used directly, but it's used
 </table><br>
 <b>Throws:</b><br>
 <a href="https://dlang.org/phobos/std_conv.html#ConvException">ConvException</a> if the specified <i>radix</i> is outside the
-  interval [2; 36].<br><br>
+  interval [2; 36].
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=blue>assert</font>(uint96(123).<u>to</u>!string(10) == <font color=red>"123"</font>);
+<pre class="d_code"><font color=blue>assert</font>(uint96(123).<u>to</u>!string(10) == <font color=red>"123"</font>);
 <font color=blue>assert</font>(uint96(123).<u>to</u>!string(16, LetterCase.lower) == <font color=red>"7b"</font>);
 <font color=blue>assert</font>(uint96(123).<u>to</u>!string(16, LetterCase.upper) == <font color=red>"7B"</font>);
 <font color=blue>assert</font>(uint96(123).<u>to</u>!string(36) == <font color=red>"3F"</font>);
 </pre>
 <br><br>
+
 </dd>
 <dt><big><a name="FixedInt.toChars"></a>pure nothrow @nogc @safe auto <u>toChars</u>(uint radix = 10, C = char, LetterCase letterCase = LetterCase.upper)() if (isSomeChar!C);
 </big></dt>
@@ -447,35 +465,71 @@ A range of characters representing of the current fixed size integer.
 Negative values are prefixed with minus sign(-) only if radix is 10.<br><br>
 
 </dd>
-<dt><big><a name="FixedInt.toBytes"></a>const pure nothrow @safe ubyte[] <u>toBytes</u>();
-<br><a name="FixedInt.toRange"></a>const pure nothrow @nogc @safe auto <u>toRange</u>();
+<dt><big><a name="FixedInt.toArray"></a>const pure nothrow @trusted T[] <u>toArray</u>(T)() if (__traits(isPOD, T) || isScalarType!T);
+<br><a name="FixedInt.toRange"></a>const pure nothrow @nogc @trusted auto <u>toRange</u>(T)() if (__traits(isPOD, T) || isScalarType!T);
 </big></dt>
 <dd>Converts the current fixed size integer to an array or range of byte data
 <br><br>
 <b>Returns:</b><br>
-A byte array or a range of bytes as the internal representation of the
-   current fixed size integer.<br><br>
+An array or a range as the internal representation of the
+   current fixed size integer.
+<br><br>
+<b>Notes:</b><br>
+The internal representation of a fixed size integer is in fact
+   a <font color=blue>uint</font>[] array with <font color=blue>sizeof</font> / 4 elements.
+   To avoid the garbage collector, direct pointer access is possible,
+   each fixed size integer containing exactly <font color=blue>sizeof</font> bytes;
+<br><br>
 <b>Examples:</b><br>
-<pre class="d_code">
-<font color=green>//assert(uint96(0xAABB).toBytes() == [0xBB, 0xAA]);
-</font></pre>
+<pre class="d_code"><font color=blue>assert</font>(uint96(0xAA).<u>toArray</u>!<font color=blue>int</font>() == [0xAA, 0, 0]);
+<font color=blue>assert</font>(uint128(0xAAAABBBBCCCCDDDD).<u>toArray</u>!<font color=blue>int</font>() == [0xCCCCDDDD, 0xAAAABBBB, 0, 0]);
+
+<font color=green>//usage with direct pointer access
+</font>uint96 x = uint96(<font color=red>"0xAAAA_BBBB_CCCC_DDDD_EEEE_FFFF"</font>);
+<font color=blue>byte</font>* bytes = <font color=blue>cast</font>(<font color=blue>byte</font>*)&amp;x;
+<font color=blue>assert</font>(*bytes == 0xFF);
+<font color=blue>assert</font>(*(bytes + x.sizeof - 1) == 0xAA;
+)
+</pre>
 <br><br>
-</dd>
-<dt><big><a name="FixedInt.digits"></a>const pure nothrow @nogc @property @safe uint <u>digits</u>();
-</big></dt>
-<dd>Calculates the number of decimal digits
-<br><br>
-<b>Returns:</b><br>
-Number of decimal digits for the current value or 0 for a zero value.<br><br>
-<b>Examples:</b><br>
-<pre class="d_code">
-<font color=green>//assert(uint96(123).digits == 3);
-</font><font color=green>//assert(int128(-12345).digits == 5);
-</font><font color=green>//assert(uint128.max.digits == 38);
-</font></pre>
-<br><br>
+
 </dd>
 </dl>
+<dt><big><a name="digits2"></a>pure nothrow @nogc @safe auto <u>digits2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Counts the number of base-2 digits (bits)
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The number of base-2 digits necessary to represent the specified value or zero if <i>x</i> is 0.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>digits2</u>(uint96(10)) == 4);
+<font color=blue>assert</font> (<u>digits2</u>(int128(-10)) == 4);
+<font color=blue>assert</font> (<u>digits2</u>(uint96(<font color=red>"0x123_4567_89AB_CDEF"</font>)) == 57);
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="digits10"></a>pure nothrow @nogc @safe auto <u>digits10</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Counts the number of base-10 digits (decimal digits)
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The number of base-10 digits necessary to represent the specified value or zero if <i>x</i> is 0.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>digits10</u>(uint96(10)) == 2);
+<font color=blue>assert</font> (<u>digits10</u>(int128(-10)) == 2);
+<font color=blue>assert</font> (<u>digits10</u>(uint96(<font color=red>"1234567890"</font>)) == 10);
+</pre>
+<br><br>
 </dd>
 <dt><big><a name="isPowerOf2"></a>pure nothrow @nogc @safe bool <u>isPowerOf2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
 </big></dt>
@@ -486,8 +540,32 @@ Number of decimal digits for the current value or 0 for a zero value.<br><br>
 <td>a fixed size integer</td></tr>
 </table><br>
 <b>Returns:</b><br>
-<b>true</b> <i>x</i> that is a power of two, otherwise <b>false</b>. Zero values are not considered powers of 2.<br><br>
-
+<b>true</b> if <i>x</i> is a power of two, otherwise <b>false</b>. Zero or negative values are not considered powers of 2.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>isPowerOf2</u>(uint96(8)));
+<font color=blue>assert</font> (!<u>isPowerOf2</u>(int128(-10)));
+<font color=blue>assert</font> (<u>isPowerOf2</u>(uint96(<font color=red>"1024"</font>)));
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="isPowerOf10"></a>pure nothrow @nogc @safe bool <u>isPowerOf10</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Check whether a number is a power of ten.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+<b>true</b> if <i>x</i> is a power of ten, otherwise <b>false</b>. Zero or negative values are not considered powers of 10.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>isPowerOf10</u>(uint96(100)));
+<font color=blue>assert</font> (!<u>isPowerOf10</u>(int128(-100)));
+<font color=blue>assert</font> (<u>isPowerOf10</u>(uint96(<font color=red>"10000000000000000000000"</font>)));
+</pre>
+<br><br>
 </dd>
 <dt><big><a name="nextPow2"></a>pure nothrow @nogc @safe auto <u>nextPow2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
 </big></dt>
@@ -498,8 +576,32 @@ Number of decimal digits for the current value or 0 for a zero value.<br><br>
 <td>a fixed size integer</td></tr>
 </table><br>
 <b>Returns:</b><br>
-The next value after <i>x</i> that is a power of two, zero if <i>x</i> is 0.<br><br>
-
+The next value after <i>x</i> that is a power of two, zero if <i>x</i> is 0 or on overflow.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>nextPow2</u>(uint96(100)) == 128);
+<font color=blue>assert</font> (<u>nextPow2</u>(int96(-100)) == -128);
+<font color=blue>assert</font> (<u>nextPow2</u>(uint128(2) == 4));
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="nextPow10"></a>pure nothrow @nogc @safe auto <u>nextPow10</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Gives the next power of ten.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The next value after <i>x</i> that is a power of ten, zero if <i>x</i> is 0 or on overflow.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>nextPow10</u>(uint96(99)) == 100);
+<font color=blue>assert</font> (<u>nextPow10</u>(int96(-99)) == -100);
+<font color=blue>assert</font> (<u>nextPow10</u>(uint128(100) == 1000));
+</pre>
+<br><br>
 </dd>
 <dt><big><a name="truncPow2"></a>pure nothrow @nogc @safe auto <u>truncPow2</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
 </big></dt>
@@ -511,7 +613,31 @@ The next value after <i>x</i> that is a power of two, zero if <i>x</i> is 0.<br>
 </table><br>
 <b>Returns:</b><br>
 The previous value before <i>x</i> that is a power of two, <i>x</i> itself if it's already a power of two, zero if <i>x</i> is 0.<br><br>
-
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>truncPow2</u>(uint96(100)) == 64);
+<font color=blue>assert</font> (<u>truncPow2</u>(int96(-100)) == -64);
+<font color=blue>assert</font> (<u>truncPow2</u>(uint128(2) == 2));
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="truncPow10"></a>pure nothrow @nogc @safe auto <u>truncPow10</u>(F)(auto ref const F <i>x</i>) if (isFixedInt!F);
+</big></dt>
+<dd>Gives the previous power of two.
+<br><br>
+<b>Params:</b><br>
+<table><tr><td>F <i>x</i></td>
+<td>a fixed size integer</td></tr>
+</table><br>
+<b>Returns:</b><br>
+The previous value before <i>x</i> that is a power of two, <i>x</i> itself if it's already a power of two, zero if <i>x</i> is 0.<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>assert</font> (<u>truncPow10</u>(uint96(99)) == 10);
+<font color=blue>assert</font> (<u>truncPow10</u>(int96(-99)) == -10);
+<font color=blue>assert</font> (<u>truncPow10</u>(uint128(10) == 10));
+</pre>
+<br><br>
 </dd>
 <dt><big><a name="isFixedInt"></a>enum auto <u>isFixedInt</u>(T);
 </big></dt>
@@ -552,6 +678,26 @@ The previous value before <i>x</i> that is a power of two, <i>x</i> itself if it
 </pre>
 <br><br>
 </dd>
-</dl>
+<dt><big><a name="UnsignedFixedInt"></a>template <u>UnsignedFixedInt</u>(T) if (isFixedInt!T)</big></dt>
+<dd>Gets the corresponding unsigned fixed size integer for
+ the specified type<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>static</font> <font color=blue>assert</font> (<font color=blue>is</font>(<u>UnsignedFixedInt</u>!uint128 == uint128));
+<font color=blue>static</font> <font color=blue>assert</font> (<font color=blue>is</font>(<u>UnsignedFixedInt</u>!int128 == uint128));
+</pre>
+<br><br>
+</dd>
+<dt><big><a name="SignedFixedInt"></a>template <u>SignedFixedInt</u>(T) if (isFixedInt!T)</big></dt>
+<dd>Gets the corresponding signed fixed size integer for
+ the specified type<br><br>
+<b>Examples:</b><br>
+<pre class="d_code">
+<font color=blue>static</font> <font color=blue>assert</font> (<font color=blue>is</font>(<u>SignedFixedInt</u>!uint128 == int128));
+<font color=blue>static</font> <font color=blue>assert</font> (<font color=blue>is</font>(<u>SignedFixedInt</u>!int128 == int128));
+</pre>
+<br><br>
+</dd>
+</dd>
 
            </body></html>

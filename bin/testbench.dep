@@ -1,0 +1,2 @@
+main (testbench\\main.d) : private : object (C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\druntime\\import\\object.d)
+module1 (module1.d) : private : object (C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\druntime\\import\\object.d)

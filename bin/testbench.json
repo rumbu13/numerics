@@ -1,0 +1,149 @@
+[
+ {
+  "kind" : "module",
+  "file" : "testbench\\main.d",
+  "members" : [
+   {
+    "kind" : "template",
+    "line" : 2,
+    "char" : 6,
+    "name" : "isEnumerable",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "isEnumerable",
+      "kind" : "variable",
+      "line" : 2,
+      "char" : 6,
+      "storageClass" : [
+       "enum"
+      ],
+      "init" : "is(typeof(()\r\n{\r\nforeach (c; T.init)\r\n{\r\n}\r\n}\r\n))"
+     }
+    ]
+   },
+   {
+    "name" : "main",
+    "kind" : "function",
+    "line" : 4,
+    "char" : 5,
+    "deco" : "FAAyaZi",
+    "parameters" : [
+     {
+      "name" : "argv",
+      "deco" : "AAya"
+     }
+    ],
+    "endline" : 8,
+    "endchar" : 1
+   }
+  ]
+ },
+ {
+  "name" : "module1",
+  "kind" : "module",
+  "file" : "module1.d",
+  "members" : [
+   {
+    "name" : "MyRange",
+    "kind" : "struct",
+    "line" : 3,
+    "char" : 1,
+    "members" : [
+     {
+      "name" : "empty",
+      "kind" : "function",
+      "line" : 5,
+      "char" : 17,
+      "deco" : "FNdZb",
+      "endline" : 5,
+      "endchar" : 40
+     },
+     {
+      "name" : "popFront",
+      "kind" : "function",
+      "line" : 6,
+      "char" : 7,
+      "deco" : "FZv"
+     },
+     {
+      "name" : "front",
+      "kind" : "function",
+      "line" : 7,
+      "char" : 17,
+      "deco" : "FNdZa",
+      "endline" : 7,
+      "endchar" : 39
+     }
+    ]
+   },
+   {
+    "name" : "MyRange2",
+    "kind" : "struct",
+    "line" : 10,
+    "char" : 1,
+    "members" : [
+     {
+      "name" : "dummy",
+      "kind" : "variable",
+      "line" : 12,
+      "char" : 6,
+      "deco" : "i",
+      "offset" : 0
+     }
+    ]
+   },
+   {
+    "name" : "empty",
+    "kind" : "function",
+    "line" : 15,
+    "char" : 16,
+    "deco" : "FNdS7module18MyRange2Zb",
+    "parameters" : [
+     {
+      "name" : "r",
+      "deco" : "S7module18MyRange2"
+     }
+    ],
+    "endline" : 15,
+    "endchar" : 49
+   },
+   {
+    "name" : "popFront",
+    "kind" : "function",
+    "line" : 16,
+    "char" : 6,
+    "deco" : "FKS7module18MyRange2Zv",
+    "parameters" : [
+     {
+      "name" : "r",
+      "deco" : "S7module18MyRange2",
+      "storageClass" : [
+       "ref"
+      ]
+     }
+    ]
+   },
+   {
+    "name" : "front",
+    "kind" : "function",
+    "line" : 17,
+    "char" : 16,
+    "deco" : "FNdS7module18MyRange2Za",
+    "parameters" : [
+     {
+      "name" : "r",
+      "deco" : "S7module18MyRange2"
+     }
+    ],
+    "endline" : 17,
+    "endchar" : 48
+   }
+  ]
+ }
+]

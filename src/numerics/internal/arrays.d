@@ -1128,10 +1128,27 @@ void sahr(uint[] x, const size_t y)
 
 /// x *= y
 @safe pure nothrow @nogc
+uint mul_basecase_gen(uint[] x, const uint y)
+{
+	ulong carry = 0;
+	for (size_t i = 0; i < x.length; ++i)
+	{
+		carry += x[i] * cast(ulong)y;
+		x[i] = cast(uint)carry;
+		carry >>= 32;
+	}
+	return cast(uint)carry;
+}
+
+/// x *= y
+@safe pure nothrow @nogc
 uint mul_basecase(uint[] x, const uint y)
 {
     version(D_InlineAsm_X86)
     {
+		if (__ctfe)
+			return mul_basecase_gen(x, y);
+
         enum pushes = 4;
         enum last_param = pushes * 4 + 4;
         enum xlen = last_param;
@@ -1176,14 +1193,7 @@ uint mul_basecase(uint[] x, const uint y)
     }
     else
     {
-        ulong carry = 0;
-        for (size_t i = 0; i < x.length; ++i)
-        {
-            carry += x[i] * cast(ulong)y;
-            x[i] = cast(uint)carry;
-            carry >>= 32;
-        }
-        return cast(uint)carry;
+        return mul_basecase_gen(x, y);
     }
 }
 
@@ -2079,7 +2089,7 @@ auto clz(const(uint)[] x)
 {
     for (ptrdiff_t i = x.length - 1; i >= 0; --i)
         if (x[i])
-            return i * 32 + clz(x[i]);
+            return (x.length - i - 1) * 32 + clz(x[i]);
     return x.length * 32;
 }
 
@@ -2104,7 +2114,32 @@ uint hash(const(uint)[] x)
     return ret;
 }
 
+//enough for 1024 bits 
+enum maxPow10 = 308;
 
+
+string genPow10()
+{
+	import std.conv: to;
+	string data = "static immutable uint[][maxPow10 + 1] pow10 = [\n [1], \n";
+	uint[] pow = [1];
+	for (int i = 1; i <= maxPow10; ++i)
+	{
+		auto carry = mul(pow, 10);
+		if (carry)
+			pow ~= [carry];
+		string s = "[";
+		for (size_t j = 0; j < pow.length; ++j)
+			s ~= to!string(pow[j]) ~ ", ";
+		s ~= "], ";
+		data ~= s ~ "\n";
+	}
+	data ~= "];";
+	return data;
+}
+
+
+mixin(genPow10());
 
 
 

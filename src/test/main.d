@@ -2645,7 +2645,7 @@ unittest
 
 unittest 
 {
-    writeln("string constructor");
+    writeln("string constructor tets");
     foreach(T; allTypes)
     {
         assert(T("0x0") == 0);
@@ -2663,25 +2663,45 @@ unittest
 
 unittest 
 {
+	auto rangify(string s)
+	{
+		static struct R
+		{
+			string buf;
+			ptrdiff_t lo = -1, hi = -1;
+			@property bool empty() { return hi < lo; }
+			@property char front() { return buf[lo]; }
+			@property char back() { return buf[hi]; }
+			void popFront() { ++lo; }
+			void popBack() { --hi; }
+		}
+		
+		R r;
+		r.buf = s;
+		r.lo = 0;
+		r.hi = s.length - 1;
+		return r;
+
+	}
     
-    writeln("range constructor");
+    writeln("range constructor test");
     foreach(T; allTypes)
     {
-        assert(T(take("0x0", 3)) == 0);
-		//assert(T("0x1234") == 0x1234);
-		//assert(T("0x12_34") == 0x1234);
-		//assert(T("123") == 123);
-		//assert(T("+123") == 123);
-		//assert(T("0b0") == 0);
-		//assert(T("0b1111") == 0b1111);
-		//assert(T("0b1_1_1_0") == 0b1110);
-		//assert(T("0o1411") == 777);
+        assert(T(rangify("0x0")) == 0);
+		assert(T(rangify("0x1234")) == 0x1234);
+		assert(T(rangify("0x12_34")) == 0x1234);
+		assert(T(rangify("123")) == 123);
+		assert(T(rangify("+123")) == 123);
+		assert(T(rangify("0b0")) == 0);
+		assert(T(rangify("0b1111")) == 0b1111);
+		assert(T(rangify("0b1_1_1_0")) == 0b1110);
+		assert(T(rangify("0o1411")) == 777);
     }
 }
 
 unittest 
 {
-    writeln("float constructor");
+    writeln("float constructor test");
     foreach(T; allTypes)
     {
         foreach(U; TypeTuple!(float, double, real))
@@ -2693,6 +2713,137 @@ unittest
         
     }
 }
+
+unittest 
+{
+    writeln("array constructor test");
+	byte[] byteArray = [cast(byte)0xAA, cast(byte)0xBB, cast(byte)0xCC];
+	short[] shortArray = [cast(short)0xAA, cast(short)0xBB, cast(short)0xCC];
+	long[] longArray = [0xAAUL];
+    foreach(T; allTypes)
+    {	
+        assert(T(byteArray) == 0xCCBBAA);
+		assert(T(shortArray) == 0xCC00BB00AAUL);
+		assert(T(longArray) == 0xAA);
+    }
+}
+
+
+unittest 
+{
+	auto rangify(T)(T[] a)
+	{
+		static struct R
+		{
+			T[] buf;
+			ptrdiff_t lo = -1, hi = -1;
+			@property bool empty() { return hi < lo; }
+			@property T front() { return buf[lo]; }
+			@property T back() { return buf[hi]; }
+			void popFront() { ++lo; }
+			void popBack() { --hi; }
+		}
+
+		R r;
+		r.buf = a;
+		r.lo = 0;
+		r.hi = a.length - 1;
+		return r;
+
+	}
+
+    writeln("range data constructor test");
+	byte[] byteArray = [cast(byte)0xAA, cast(byte)0xBB, cast(byte)0xCC];
+	short[] shortArray = [cast(short)0xAA, cast(short)0xBB, cast(short)0xCC];
+	long[] longArray = [0xAAUL];
+    foreach(T; allTypes)
+    {	
+        assert(T(rangify(byteArray)) == 0xCCBBAA);
+		assert(T(rangify(shortArray)) == 0xCC00BB00AAUL);
+		assert(T(rangify(longArray)) == 0xAA);
+    }
+}
+
+
+unittest 
+{
+    writeln("to string test");
+    foreach(T; allTypes)
+    {	
+        assert(T(123).toString() == "123");
+		assert(T(456).toString() == "456");
+
+		assert(T(123).to!string() == "123");
+		assert(T(123).to!wstring() == "123");
+		assert(T(123).to!dstring() == "123");
+    }
+}
+
+unittest 
+{
+	string stringify(R)(R range)
+	{
+		string s;
+		while (!range.empty)
+		{
+			s ~= range.front;
+			range.popFront();
+		}
+		return s;
+	}
+
+    writeln("to chars test");
+    foreach(T; allTypes)
+    {	
+		assert(stringify(T(123).toChars!2()) == "1111011");
+		assert(stringify(T(123).toChars!3()) == "11120");
+		assert(stringify(T(123).toChars!4()) == "1323");
+		assert(stringify(T(123).toChars!5()) == "443");
+		assert(stringify(T(123).toChars!6()) == "323");
+		assert(stringify(T(123).toChars!7()) == "234");
+		assert(stringify(T(123).toChars!8()) == "173");
+		assert(stringify(T(123).toChars!9()) == "146");
+        assert(stringify(T(123).toChars!10()) == "123");
+		assert(stringify(T(123).toChars!11()) == "102");
+		assert(stringify(T(123).toChars!12()) == "A3");
+		assert(stringify(T(123).toChars!13()) == "96");
+		assert(stringify(T(123).toChars!14()) == "8B");
+		assert(stringify(T(123).toChars!15()) == "83");
+		assert(stringify(T(123).toChars!16()) == "7B");
+		assert(stringify(T(123).toChars!17()) == "74");
+		assert(stringify(T(123).toChars!18()) == "6F");
+		assert(stringify(T(123).toChars!19()) == "69");
+		assert(stringify(T(123).toChars!20()) == "63");
+		assert(stringify(T(123).toChars!21()) == "5I");
+		assert(stringify(T(123).toChars!22()) == "5D");
+		assert(stringify(T(123).toChars!23()) == "58");
+		assert(stringify(T(123).toChars!24()) == "53");
+		assert(stringify(T(123).toChars!25()) == "4N");
+		assert(stringify(T(123).toChars!26()) == "4J");
+		assert(stringify(T(123).toChars!27()) == "4F");
+		assert(stringify(T(123).toChars!28()) == "4B");
+		assert(stringify(T(123).toChars!29()) == "47");
+		assert(stringify(T(123).toChars!30()) == "43");
+		assert(stringify(T(123).toChars!31()) == "3U");
+		assert(stringify(T(123).toChars!32()) == "3R");
+		assert(stringify(T(123).toChars!33()) == "3O");
+		assert(stringify(T(123).toChars!34()) == "3L");
+		assert(stringify(T(123).toChars!35()) == "3I");
+		assert(stringify(T(123).toChars!36()) == "3F");
+    }
+}
+
+
+unittest 
+{
+    writeln("to array test");
+    foreach(T; allTypes)
+    {	
+        assert(equuu(T(123).toArray!uint(), [123]));
+		assert(equuu(T(0xAAAABBBBCCCCDDDDUL).toArray!uint(), [0xCCCCDDDD, 0xAAAABBBB]));
+    }
+}
+
 
 unittest 
 {

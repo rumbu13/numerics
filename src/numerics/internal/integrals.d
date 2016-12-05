@@ -80,3 +80,18 @@ auto ctz(const ulong x)
     else
         static assert(0);
 }
+
+
+auto digits10(const uint v)
+{
+	return (v >= 1000000000U) ? 9 :
+			(v >= 100000000U) ? 8 : 
+			 (v >= 10000000U) ? 7 : 
+			  (v >= 1000000U) ? 6 : 
+	           (v >= 100000U) ? 5 : 
+	            (v >= 10000U) ? 4 : 
+			     (v >= 1000U) ? 3 :
+				  (v >= 100U) ? 2 : 
+	               (v >= 10U) ? 1 : 0;
+}
+

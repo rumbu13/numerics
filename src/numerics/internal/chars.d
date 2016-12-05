@@ -1,6 +1,6 @@
 module numerics.internal.chars;
 
-import std.traits: isSomeChar;
+import std.traits: isSomeChar, Unqual;
 import std.array;
 
 @safe pure nothrow @nogc

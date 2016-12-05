@@ -410,5 +410,6 @@
  </Config>
  <Folder name="testbench">
   <File path="testbench\main.d" />
+  <File path="module1.d" />
  </Folder>
 </DProject>
